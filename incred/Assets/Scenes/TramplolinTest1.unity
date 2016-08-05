@@ -228,7 +228,7 @@ SpringJoint2D:
   m_AutoConfigureDistance: 0
   m_Distance: 1
   m_DampingRatio: 0
-  m_Frequency: 3
+  m_Frequency: 4
 --- !u!61 &62643785
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -714,7 +714,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1202921271}
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 0.1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
