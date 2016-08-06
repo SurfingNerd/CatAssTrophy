@@ -11,12 +11,21 @@ namespace AssetPlacement
     {
         private LevelAssetService m_levelAssetService;
 
-        private GameObject m_currentSelectedPrefab;
+        private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
+
+
+
+        //private GameObject m_currentSelectedPrefab;
+        private LevelAsset m_currentSelectedAsset;
+        
+        public Canvas m_buttonPlacementCanvas;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
-        public List<System.Collections.Generic.KeyValuePair<GameObject, GameObject>> PlacedAssets
-            = new List<KeyValuePair<GameObject, GameObject>>();
+        public List<System.Collections.Generic.KeyValuePair<LevelAsset, GameObject>> PlacedAssets
+            = new List<KeyValuePair<LevelAsset, GameObject>>();
+
+
 
         [HideInInspector]
         public LevelAsset[] AvailableAssets;
@@ -24,12 +33,14 @@ namespace AssetPlacement
         // Use this for initialization
         void Start()
         {
+            Build();
 
         }
 
         void Awake()
         {
             m_levelAssetService = GetComponent<LevelAssetService>();
+            m_buttonPlacementCanvas = GetComponent<Canvas>();
             if (m_levelAssetService != null)
             {
                 AvailableAssets = m_levelAssetService.Assets;
@@ -38,50 +49,144 @@ namespace AssetPlacement
             {
                 Debug.LogError(typeof(LevelAssetService).FullName + " not defined!");
             }
-
-            
-            
         }
 
         GameObject currentPreviewObject;
 
+
         // Update is called once per frame
         void Update()
         {
+            //if (m_currentSelectedAsset != null)
+            //{
 
-            if (m_currentSelectedPrefab != null)
+            Vector3? vector = GeometryHelper.GetPositionFromMouse();
+            if (vector.HasValue)
             {
-
-                Vector3? vector = GeometryHelper.GetPositionFromMouse();
-                if (vector.HasValue)
+                //create new if not exist
+                if (currentPreviewObject == null && m_currentSelectedAsset != null && m_currentSelectedAsset.Prefab != null)
                 {
-                    //create new if not exist
-                    if (currentPreviewObject == null)
-                    {
-                        currentPreviewObject = Instantiate(m_currentSelectedPrefab) as GameObject;
-                        MakePreviewObject(currentPreviewObject);
-                    }
-
-
-                    currentPreviewObject.transform.position = vector.Value;
-
-                    //DeactivateAllColliders(currentPreviewObject);
+                    currentPreviewObject = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
+                    MakePreviewObject(currentPreviewObject);
                 }
+
+                if (currentPreviewObject != null)
+                {
+                    currentPreviewObject.transform.position = vector.Value;
+                }
+
+                //DeactivateAllColliders(currentPreviewObject);
+
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    GameObject obj = Instantiate(m_currentSelectedPrefab) as GameObject;
-                    obj.transform.position = vector.Value;
-                    PlacedAssets.Add(new KeyValuePair<GameObject, GameObject>(m_currentSelectedPrefab, obj));
 
-                    foreach (LevelAsset asset in AvailableAssets)
+                    bool selectOtherPrefab = false;
+
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                    RaycastHit[] allHits = Physics.RaycastAll(ray);
+
+                    foreach (RaycastHit hit in allHits)
                     {
-                        if (asset.Prefab == m_currentSelectedPrefab)
+                        //if (hit.)
+                        if (m_assetSelectors.ContainsKey(hit.transform.gameObject))
                         {
-                            asset.Count--;
+                            LevelAsset asset = m_assetSelectors[hit.transform.gameObject];
+                            m_currentSelectedAsset = asset;
+                            
+                            selectOtherPrefab = true;
+
+                            //m_assetSelectors.Remove(hit.transform.gameObject);
+                            //Destroy(hit.transform.gameObject);
                         }
                     }
+
+
+                    if (!selectOtherPrefab && m_currentSelectedAsset != null)
+                    {
+                        
+                        GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
+                        m_currentSelectedAsset.Count--;
+                        obj.transform.position = vector.Value;
+                        PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
+
+                        Build();
+                    }
+
+
+
+                    //foreach (LevelAsset asset in AvailableAssets)
+                    //{
+                    //    if (asset.Prefab == m_currentSelectedPrefab)
+                    //    {
+                    //        asset.Count--;
+                    //    }
+                    //}
+                    //}
                 }
+            }
+        }
+
+        private void Build()
+        {
+
+            Cleanup();
+
+            //float x = -427;
+            //float y = -320;
+
+            //float x = 1;
+            //float y = 1;
+
+            float x = 0.5f;
+            float y = 0.5f;
+
+            for (int i = 0; i < AvailableAssets.Length; i++)
+            {
+                var asset = AvailableAssets[i];
+
+                if (asset != null)
+                {
+                    if (asset.Prefab != null)
+                    {
+                        //create UI for that asset and register a click handler
+                        string uiName = asset.Prefab.name;
+                        if (asset.Count > 1)
+                        {
+                            //uiName += " x " + asset.Count;
+                        }
+                        //UnityEngine.GUI.Button(new Rect(50, i * 20, 40, 10), uiName);
+
+                        //WTF do i need a prefab for 
+
+                        GameObject objectHolder = Instantiate<GameObject>(new GameObject());
+
+                        objectHolder.transform.position = new Vector3(x, y, 0);
+                        objectHolder.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        objectHolder.transform.parent = m_buttonPlacementCanvas.transform;
+
+
+                        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        //cube.transform.position = new Vector3(x, y, 0);
+                        cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        cube.transform.parent = objectHolder.transform.parent;
+
+                        m_assetSelectors.Add(cube, asset);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Level asset defined without a selected prefab!");
+                    }
+                }
+            }
+        }
+
+        private void Cleanup()
+        {
+            foreach (var item in this.m_assetSelectors)
+            {
+                Destroy(item.Key);
             }
         }
 
