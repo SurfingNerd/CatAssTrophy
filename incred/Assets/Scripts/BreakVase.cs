@@ -3,6 +3,9 @@ using System.Collections;
 
 public class BreakVase : MonoBehaviour {
 
+
+    public GameObject BrokenVasePrefab;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,7 +17,14 @@ public class BreakVase : MonoBehaviour {
 
         if (coll.gameObject.tag == "potflower")
         {
-            Debug.Log("Collision with flower!");
+            Debug.Log("Gameobj length " + GameObject.FindGameObjectsWithTag("breakablePot").Length);
+            Destroy(gameObject);
+
+            //GameObject breakPot = GameObject.FindGameObjectsWithTag("breakablePot")[0];
+            //Instantiate(breakPot);
+            GameObject breakPot = Instantiate(BrokenVasePrefab);
+            breakPot.transform.position = transform.position;
+            
         }
     }
 
