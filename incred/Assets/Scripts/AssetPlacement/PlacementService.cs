@@ -12,8 +12,10 @@ namespace AssetPlacement
         private LevelAssetService m_levelAssetService;
 
         private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
+        private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
 
-
+        public Material BackgroundMaterial;
+        public Material TextMaterial;
 
         //private GameObject m_currentSelectedPrefab;
         private LevelAsset m_currentSelectedAsset;
@@ -104,6 +106,7 @@ namespace AssetPlacement
                             obj.transform.position = vector.Value;
                             PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
 
+                            UpdateCountText(m_currentSelectedAsset);
                             //Build();
 
                             if (m_currentSelectedAsset.Count <= 0)
@@ -116,6 +119,13 @@ namespace AssetPlacement
                     }
                 }
             }
+        }
+
+        private void UpdateCountText(LevelAsset m_currentSelectedAsset)
+        {
+            //todo: 
+            //update m_textMeshes
+
         }
 
         private void Build()
