@@ -4,6 +4,11 @@ using System.Collections;
 public class BtnResponse : MonoBehaviour {
 
     public RectTransform rectTransform;
+    public int normalSizeX;
+    public int normalSizeY;
+    public int biggerSizeX;
+    public int biggerSizeY;
+     
 
     // Use this for initialization
     void Start () {
@@ -17,11 +22,11 @@ public class BtnResponse : MonoBehaviour {
 
     public void hoverEffect()
     {
-        rectTransform.sizeDelta = new Vector2(120, 120);
+        rectTransform.sizeDelta = new Vector2(biggerSizeX, biggerSizeY);
     }
 
     public void btnExit()
     {
-        rectTransform.sizeDelta = new Vector2(100, 100);
+        rectTransform.sizeDelta = new Vector2(normalSizeX, normalSizeY);
     }
 }
