@@ -7,28 +7,26 @@ public class nextLevel : MonoBehaviour {
 	public int waitSeconds = 5;
 
 	private bool rotating = false; 
+	GameObject bg;
 	// Use this for initialization
 	void Start () {
-
+		bg = GameObject.Find ("hiding-background");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-		if (rotating) {
-			GameObject.Find ("hiding-background").transform.Rotate(1,0,0);
+
+		//Debug.Log (bg.transform.rotation.eulerAngles.x);
+
+		if (rotating && bg.transform.rotation.eulerAngles.x < 180) {
+			bg.transform.Rotate(1,0,0);
+
 
 		}
 
 		if (Input.anyKey) {
 
-
 			rotating = true; 
-
-			//	transform.Rotate (0,0,rotationSpeed);
-
-
-
 			StartCoroutine(LoadAfterTime(waitSeconds));
 
 
