@@ -4,7 +4,8 @@ using System.Collections;
 public class FreeCam : MonoBehaviour {
 
     Camera m_camera;
-    Transform m_cameraTransform;
+    Transform m_player;
+    Vector3 m_offset;
 
     public float CameraMovementSpeed = 1;
 
@@ -16,8 +17,8 @@ public class FreeCam : MonoBehaviour {
             throw new System.InvalidOperationException(GetType().FullName + " needs to be attached to a camera");
         }
 
-        m_cameraTransform = GetComponent<Transform>();
-
+        m_player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        m_offset = transform.position;
     }
 	
 	// Update is called once per frame
@@ -26,9 +27,16 @@ public class FreeCam : MonoBehaviour {
         float y = Input.GetAxis("Vertical");
         float x = Input.GetAxis("Horizontal");
 
-        if (x != 0 || y != 0)
+        bool focusBall = Input.GetKey(KeyCode.Space);
+
+        if (focusBall)
         {
-            m_cameraTransform.position = new Vector3(m_cameraTransform.position.x + x * CameraMovementSpeed, m_cameraTransform.position.y + y * CameraMovementSpeed, m_cameraTransform.position.z);
+            transform.position = new Vector3(m_player.position.x + m_offset.x, m_player.position.y + m_offset.y, m_offset.z); 
+            // Camera follows the player with specified offset position
+        }
+        else if (x != 0 || y != 0)
+        {
+            transform.position = new Vector3(transform.position.x + x * CameraMovementSpeed, transform.position.y + y * CameraMovementSpeed, transform.position.z);
         }
         //
 	}
