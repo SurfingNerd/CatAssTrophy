@@ -75,9 +75,6 @@ namespace AssetPlacement
                     currentPreviewObject.transform.position = vector.Value;
                 }
 
-                //DeactivateAllColliders(currentPreviewObject);
-
-
                 if (Input.GetMouseButtonDown(0))
                 {
 
@@ -89,16 +86,11 @@ namespace AssetPlacement
 
                     foreach (RaycastHit hit in allHits)
                     {
-                        //if (hit.)
                         if (m_assetSelectors.ContainsKey(hit.transform.gameObject))
                         {
                             LevelAsset asset = m_assetSelectors[hit.transform.gameObject];
                             m_currentSelectedAsset = asset;
-                            
                             selectOtherPrefab = true;
-
-                            //m_assetSelectors.Remove(hit.transform.gameObject);
-                            //Destroy(hit.transform.gameObject);
                         }
                     }
 
@@ -146,25 +138,14 @@ namespace AssetPlacement
 
                 if (asset != null)
                 {
-                    if (asset.Prefab != null)
+                    if (asset.Prefab != null && asset.Count > 0)
                     {
-                        //create UI for that asset and register a click handler
-                        //UnityEngine.GUI.Button(new Rect(50, i * 20, 40, 10), uiName);
-
-                        //WTF do i need a prefab for 
-
-                        //GameObject objectHolder = Instantiate<GameObject>(new GameObject());
-
-                        //objectHolder.transform.position = new Vector3(x, y, 0);
-                        //objectHolder.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        //objectHolder.transform.parent = m_buttonPlacementCanvas.transform;
-
-
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         cube.transform.position = new Vector3(x, y, 0);
                         cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                         cube.transform.parent = m_buttonPlacementCanvas.transform;
                         //cube.transform.parent = objectHolder.transform.parent;
+                        y -= 0.25f;
 
                         m_assetSelectors.Add(cube, asset);
                     }
@@ -189,9 +170,7 @@ namespace AssetPlacement
         private void MakePreviewObject(GameObject currentPreviewObject)
         {
             DeactivateAllBehaviors(currentPreviewObject);
-            //DeactivateAllColliders(currentPreviewObject);
             DeactivateAllRigidBodies(currentPreviewObject);
-            //DeactivateAllJoints(currentPreviewObject);
         }
 
         private void DeactivateAllBehaviors(GameObject currentPreviewObject)
@@ -217,12 +196,6 @@ namespace AssetPlacement
                 item.enabled = false;
             }
 
-
-            //Rigidbody2D rigBody = currentPreviewObject.GetComponent<Rigidbody2D>();
-
-            //rigBody.enabled = false;
-
-
         }
 
         private void DeactivateAllColliders(GameObject obj)
@@ -233,18 +206,6 @@ namespace AssetPlacement
                 collider.enabled = false;
             }
         }
-
-        //private System.Collections.Generic.IEnumerable<T> GetAll<T>(GameObject obj)
-        //{
-        //    T parentObject = obj.GetComponent<T>();
-        //    if (parentObject != null)
-        //        yield return parentObject;
-
-        //    foreach (T child in obj.GetComponentsInChildren<T>())
-        //    {
-        //        yield return child;
-        //    }
-        //}
 
         private IEnumerable<T> GetAll<T>(GameObject obj)
         {
@@ -261,14 +222,9 @@ namespace AssetPlacement
     {
         public static Vector3? GetPositionFromMouse()
         {
-            //Transform transform = GetComponent<Transform>();
             Plane plane = new UnityEngine.Plane(Vector3.back, Vector3.zero);
-
-            //Plane plane = Plane.GetComponent<Plane>();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //        RaycastHit hit;
 
-            //Vector3 newPosition = new Vector3((float)System.Math.Round(ray.origin.x), 1, (float)System.Math.Round(ray.origin.z));
             float center;
 
             if (plane.Raycast(ray, out center))
