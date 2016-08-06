@@ -18,7 +18,7 @@ namespace AssetPlacement
         //private GameObject m_currentSelectedPrefab;
         private LevelAsset m_currentSelectedAsset;
         
-        public Canvas m_buttonPlacementCanvas;
+        private Canvas m_buttonPlacementCanvas;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
@@ -105,25 +105,23 @@ namespace AssetPlacement
 
                     if (!selectOtherPrefab && m_currentSelectedAsset != null)
                     {
-                        
-                        GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
-                        m_currentSelectedAsset.Count--;
-                        obj.transform.position = vector.Value;
-                        PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
+                        if (m_currentSelectedAsset.Count > 0)
+                        {
+                            GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
+                            m_currentSelectedAsset.Count--;
+                            obj.transform.position = vector.Value;
+                            PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
 
-                        Build();
+                            Build();
+
+                            if (m_currentSelectedAsset.Count <= 0)
+                            {
+                                m_currentSelectedAsset = null;
+                                Destroy(currentPreviewObject);
+                                currentPreviewObject = null;
+                            }
+                        }
                     }
-
-
-
-                    //foreach (LevelAsset asset in AvailableAssets)
-                    //{
-                    //    if (asset.Prefab == m_currentSelectedPrefab)
-                    //    {
-                    //        asset.Count--;
-                    //    }
-                    //}
-                    //}
                 }
             }
         }
@@ -151,26 +149,22 @@ namespace AssetPlacement
                     if (asset.Prefab != null)
                     {
                         //create UI for that asset and register a click handler
-                        string uiName = asset.Prefab.name;
-                        if (asset.Count > 1)
-                        {
-                            //uiName += " x " + asset.Count;
-                        }
                         //UnityEngine.GUI.Button(new Rect(50, i * 20, 40, 10), uiName);
 
                         //WTF do i need a prefab for 
 
-                        GameObject objectHolder = Instantiate<GameObject>(new GameObject());
+                        //GameObject objectHolder = Instantiate<GameObject>(new GameObject());
 
-                        objectHolder.transform.position = new Vector3(x, y, 0);
-                        objectHolder.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        objectHolder.transform.parent = m_buttonPlacementCanvas.transform;
+                        //objectHolder.transform.position = new Vector3(x, y, 0);
+                        //objectHolder.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        //objectHolder.transform.parent = m_buttonPlacementCanvas.transform;
 
 
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        //cube.transform.position = new Vector3(x, y, 0);
+                        cube.transform.position = new Vector3(x, y, 0);
                         cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        cube.transform.parent = objectHolder.transform.parent;
+                        cube.transform.parent = m_buttonPlacementCanvas.transform;
+                        //cube.transform.parent = objectHolder.transform.parent;
 
                         m_assetSelectors.Add(cube, asset);
                     }
@@ -188,6 +182,8 @@ namespace AssetPlacement
             {
                 Destroy(item.Key);
             }
+
+            this.m_assetSelectors.Clear();
         }
 
         private void MakePreviewObject(GameObject currentPreviewObject)
