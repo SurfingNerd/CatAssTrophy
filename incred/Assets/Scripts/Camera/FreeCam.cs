@@ -45,6 +45,7 @@ public class FreeCam : MonoBehaviour {
                 newZ = CamDistanceMin;
             }
             m_offset = new Vector3(m_offset.x, m_offset.y, newZ);
+            transform.position = new Vector3(transform.position.x, transform.position.y, m_offset.z);
         }
         
         if (focusBall)
