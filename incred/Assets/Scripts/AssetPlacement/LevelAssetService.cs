@@ -49,6 +49,7 @@ namespace AssetPlacement
     [System.Serializable]
     public class LevelAsset
     {
+        
         public GameObject Prefab;
         public int Count = 1;
     }
