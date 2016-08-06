@@ -18,7 +18,7 @@ namespace AssetPlacement
         //private GameObject m_currentSelectedPrefab;
         private LevelAsset m_currentSelectedAsset;
         
-        public Canvas m_buttonPlacementCanvas;
+        private Canvas m_buttonPlacementCanvas;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
