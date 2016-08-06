@@ -12,13 +12,15 @@ namespace AssetPlacement
         private LevelAssetService m_levelAssetService;
 
         private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
+        private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
 
-
+        public Material BackgroundMaterial;
+        public Material TextMaterial;
 
         //private GameObject m_currentSelectedPrefab;
         private LevelAsset m_currentSelectedAsset;
         
-        public Canvas m_buttonPlacementCanvas;
+        private Canvas m_buttonPlacementCanvas;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
@@ -75,9 +77,6 @@ namespace AssetPlacement
                     currentPreviewObject.transform.position = vector.Value;
                 }
 
-                //DeactivateAllColliders(currentPreviewObject);
-
-
                 if (Input.GetMouseButtonDown(0))
                 {
 
@@ -89,43 +88,44 @@ namespace AssetPlacement
 
                     foreach (RaycastHit hit in allHits)
                     {
-                        //if (hit.)
                         if (m_assetSelectors.ContainsKey(hit.transform.gameObject))
                         {
                             LevelAsset asset = m_assetSelectors[hit.transform.gameObject];
                             m_currentSelectedAsset = asset;
-                            
                             selectOtherPrefab = true;
-
-                            //m_assetSelectors.Remove(hit.transform.gameObject);
-                            //Destroy(hit.transform.gameObject);
                         }
                     }
 
 
                     if (!selectOtherPrefab && m_currentSelectedAsset != null)
                     {
-                        
-                        GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
-                        m_currentSelectedAsset.Count--;
-                        obj.transform.position = vector.Value;
-                        PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
+                        if (m_currentSelectedAsset.Count > 0)
+                        {
+                            GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
+                            m_currentSelectedAsset.Count--;
+                            obj.transform.position = vector.Value;
+                            PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
 
-                        Build();
+                            UpdateCountText(m_currentSelectedAsset);
+                            //Build();
+
+                            if (m_currentSelectedAsset.Count <= 0)
+                            {
+                                m_currentSelectedAsset = null;
+                                Destroy(currentPreviewObject);
+                                currentPreviewObject = null;
+                            }
+                        }
                     }
-
-
-
-                    //foreach (LevelAsset asset in AvailableAssets)
-                    //{
-                    //    if (asset.Prefab == m_currentSelectedPrefab)
-                    //    {
-                    //        asset.Count--;
-                    //    }
-                    //}
-                    //}
                 }
             }
+        }
+
+        private void UpdateCountText(LevelAsset m_currentSelectedAsset)
+        {
+            //todo: 
+            //update m_textMeshes
+
         }
 
         private void Build()
@@ -148,29 +148,17 @@ namespace AssetPlacement
 
                 if (asset != null)
                 {
-                    if (asset.Prefab != null)
+                    if (asset.Prefab != null && asset.Count > 0)
                     {
-                        //create UI for that asset and register a click handler
-                        string uiName = asset.Prefab.name;
-                        if (asset.Count > 1)
-                        {
-                            //uiName += " x " + asset.Count;
-                        }
-                        //UnityEngine.GUI.Button(new Rect(50, i * 20, 40, 10), uiName);
-
-                        //WTF do i need a prefab for 
-
-                        GameObject objectHolder = Instantiate<GameObject>(new GameObject());
-
-                        objectHolder.transform.position = new Vector3(x, y, 0);
-                        objectHolder.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        objectHolder.transform.parent = m_buttonPlacementCanvas.transform;
-
-
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        //cube.transform.position = new Vector3(x, y, 0);
-                        cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        cube.transform.parent = objectHolder.transform.parent;
+                        cube.transform.position = new Vector3(x, y, 0);
+                        cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.01f);
+                        cube.transform.parent = m_buttonPlacementCanvas.transform;
+                        //cube.transform.parent = objectHolder.transform.parent;
+
+
+
+                        y -= 0.25f;
 
                         m_assetSelectors.Add(cube, asset);
                     }
@@ -188,14 +176,14 @@ namespace AssetPlacement
             {
                 Destroy(item.Key);
             }
+
+            this.m_assetSelectors.Clear();
         }
 
         private void MakePreviewObject(GameObject currentPreviewObject)
         {
             DeactivateAllBehaviors(currentPreviewObject);
-            //DeactivateAllColliders(currentPreviewObject);
             DeactivateAllRigidBodies(currentPreviewObject);
-            //DeactivateAllJoints(currentPreviewObject);
         }
 
         private void DeactivateAllBehaviors(GameObject currentPreviewObject)
@@ -221,12 +209,6 @@ namespace AssetPlacement
                 item.enabled = false;
             }
 
-
-            //Rigidbody2D rigBody = currentPreviewObject.GetComponent<Rigidbody2D>();
-
-            //rigBody.enabled = false;
-
-
         }
 
         private void DeactivateAllColliders(GameObject obj)
@@ -237,18 +219,6 @@ namespace AssetPlacement
                 collider.enabled = false;
             }
         }
-
-        //private System.Collections.Generic.IEnumerable<T> GetAll<T>(GameObject obj)
-        //{
-        //    T parentObject = obj.GetComponent<T>();
-        //    if (parentObject != null)
-        //        yield return parentObject;
-
-        //    foreach (T child in obj.GetComponentsInChildren<T>())
-        //    {
-        //        yield return child;
-        //    }
-        //}
 
         private IEnumerable<T> GetAll<T>(GameObject obj)
         {
@@ -265,14 +235,9 @@ namespace AssetPlacement
     {
         public static Vector3? GetPositionFromMouse()
         {
-            //Transform transform = GetComponent<Transform>();
             Plane plane = new UnityEngine.Plane(Vector3.back, Vector3.zero);
-
-            //Plane plane = Plane.GetComponent<Plane>();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //        RaycastHit hit;
 
-            //Vector3 newPosition = new Vector3((float)System.Math.Round(ray.origin.x), 1, (float)System.Math.Round(ray.origin.z));
             float center;
 
             if (plane.Raycast(ray, out center))
