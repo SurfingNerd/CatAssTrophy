@@ -5,15 +5,17 @@ public class BreakVase : MonoBehaviour {
 
 
     public GameObject BrokenVasePrefab;
+    public GameObject BrokenVaseAlternate;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 	
 	}
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        
+
+        Debug.Log("Collision");
 
         if (coll.gameObject.tag == "potflower")
         {
@@ -22,7 +24,7 @@ public class BreakVase : MonoBehaviour {
 
             //GameObject breakPot = GameObject.FindGameObjectsWithTag("breakablePot")[0];
             //Instantiate(breakPot);
-            GameObject breakPot = Instantiate(BrokenVasePrefab);
+            GameObject breakPot = Instantiate(BrokenVaseAlternate);
             breakPot.transform.position = transform.position;
             
         }
