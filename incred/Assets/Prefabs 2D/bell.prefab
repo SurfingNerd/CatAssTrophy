@@ -23,7 +23,7 @@ GameObject:
   - 50: {fileID: 50000011574715448}
   - 58: {fileID: 58000011633476268}
   - 232: {fileID: 232000010595032042}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: bell_ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - 60: {fileID: 60000013584318816}
   - 233: {fileID: 233000011891842548}
   - 231: {fileID: 231000013856697786}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: bell_mail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013814658286}
   m_Layer: 0
-  m_Name: Bell
+  m_Name: bell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,8 +98,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012088520290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: 1.69, z: 1.7050781}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.564415, y: 4.564419, z: 4.564419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010733506736}
@@ -114,7 +114,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011309397708}
   m_UseAutoMass: 1
-  m_Mass: 3.0595284
+  m_Mass: 63.74191
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -131,7 +131,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010103181318}
   m_UseAutoMass: 1
-  m_Mass: 0.39427897
+  m_Mass: 8.214363
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -288,7 +288,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 1.18}
   m_AutoConfigureDistance: 1
-  m_Distance: 2.5099998
+  m_Distance: 11.456691
   m_MaxDistanceOnly: 0
 --- !u!233 &233000011891842548
 HingeJoint2D:
@@ -304,7 +304,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 1.46}
-  m_ConnectedAnchor: {x: 0, y: 1.46}
+  m_ConnectedAnchor: {x: 58.191288, y: 11.3501835}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
