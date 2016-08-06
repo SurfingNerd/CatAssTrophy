@@ -53,7 +53,6 @@ namespace Completed
 		//Initializes the game for each level.
 		void InitGame()
 		{
-			
 			Debug.Log ("hihi" + level);
 			levelManager.LoadLevel(level);
 		}
