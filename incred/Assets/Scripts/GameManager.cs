@@ -1,15 +1,25 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
 
 namespace Completed
 {
-	using System.Collections.Generic;       //Allows us to use Lists. 
+	using System.Collections.Generic;      
 
 	public class GameManager : MonoBehaviour
 	{
 
+		[SerializeField]
+		private GameConfig gameConfig;
+		private LevelManager levelManager;
+
+
+
+		private String state = "start";
+
 		public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
-		//private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
 		private int level = 0;                                  //Current level number, expressed in game as "Day 1".
 
 		//Awake is always called before any Start functions
@@ -33,6 +43,9 @@ namespace Completed
 			//Get a component reference to the attached BoardManager script
 			//boardScript = GetComponent<BoardManager>();
 
+			levelManager = GetComponent<LevelManager> ();
+
+
 			//Call the InitGame function to initialize the first level 
 			InitGame();
 		}
@@ -40,9 +53,9 @@ namespace Completed
 		//Initializes the game for each level.
 		void InitGame()
 		{
-			//Call the SetupScene function of the BoardManager script, pass it current level number.
-			//boardScript.SetupScene(level);
-
+			
+			Debug.Log ("hihi" + level);
+			levelManager.LoadLevel(level);
 		}
 
 
@@ -51,6 +64,21 @@ namespace Completed
 		void Update()
 		{
 
+		}
+
+
+		public void OnGUI() {
+			#if UNITY_EDITOR
+			GUILayout.Label("Current state: " + state);
+			GUILayout.Label("Current level: " + level);
+			#endif
+		}
+
+
+		public GameConfig GameConfig {
+			get {
+				return gameConfig;
+			}
 		}
 	}
 }
