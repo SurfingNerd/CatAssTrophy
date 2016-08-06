@@ -104,7 +104,7 @@ namespace AssetPlacement
                             obj.transform.position = vector.Value;
                             PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
 
-                            Build();
+                            //Build();
 
                             if (m_currentSelectedAsset.Count <= 0)
                             {
@@ -142,9 +142,12 @@ namespace AssetPlacement
                     {
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         cube.transform.position = new Vector3(x, y, 0);
-                        cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.01f);
                         cube.transform.parent = m_buttonPlacementCanvas.transform;
                         //cube.transform.parent = objectHolder.transform.parent;
+
+
+
                         y -= 0.25f;
 
                         m_assetSelectors.Add(cube, asset);
