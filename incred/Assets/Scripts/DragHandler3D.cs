@@ -8,7 +8,7 @@ public class DragHandler3D : MonoBehaviour {
 	private Vector3 scanPos;
 
 
-
+		
 	void OnMouseDown()
 	{
 		screenPoint = Camera.main.WorldToScreenPoint(scanPos);
@@ -22,14 +22,25 @@ public class DragHandler3D : MonoBehaviour {
 
 	void OnMouseDrag()
 	{
-		Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 
+		GameObject cat = GameObject.Find ("coolCat");
+
+		if ((cat.GetComponent<Rigidbody2D>().velocity.magnitude < 0.5) ) {
+		Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 
 //		Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
 		Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
 		transform.position = curPosition;
-
+		this.GetComponent<BoxCollider2D> ().enabled = false;
+		}
 	}
+
+	void OnMouseUp()
+	{
+		
+		this.GetComponent<BoxCollider2D> ().enabled = true;
+	}
+
 
 	public void addThisObject()
 	{
