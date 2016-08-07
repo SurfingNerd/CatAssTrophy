@@ -18,7 +18,7 @@ public class BreakVase : MonoBehaviour {
 
         Debug.Log("Collision");
 
-        if (coll.gameObject.tag == "potflower")
+        if (coll.gameObject.tag == "potflower" || coll.gameObject.tag == "Player" || coll.gameObject.tag == "wakeobject")
         {
             //Debug.Log("Gameobj length " + GameObject.FindGameObjectsWithTag("breakablePot").Length);
 
