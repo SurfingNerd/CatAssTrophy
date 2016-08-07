@@ -13,8 +13,8 @@ public class buttonClick : MonoBehaviour {
 
 	public void startLevel(){
 		// Save game data
-		GameObject cat = GameObject.Find("cat-guy");
-		cat.AddComponent<Rigidbody2D> ();
+		GameObject cat = GameObject.Find("coolCat");
+		cat.GetComponent<Rigidbody2D> ().isKinematic = false;
 
 		// Close game
 	}

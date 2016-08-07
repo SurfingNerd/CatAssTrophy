@@ -32,6 +32,8 @@ public class DragHandler3D : MonoBehaviour {
 
 	public void addThisObject()
 	{
+
+		Debug.Log ("moving..");
 		transform.position = new Vector3 (5f, 3f, -2.0f);
 
 	}
