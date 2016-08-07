@@ -29,6 +29,15 @@ public class DragHandler3D : MonoBehaviour {
 		transform.position = curPosition;
 
 	}
+
+	public void addThisObject()
+	{
+		transform.position = new Vector3 (5f, 3f, -2.0f);
+
+	}
+
+
+
 }
 
 
