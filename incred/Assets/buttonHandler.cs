@@ -9,7 +9,15 @@ public class buttonHandler : MonoBehaviour {
 	public void LoadLevel(int levelNumber) {
 
 
+		if(levelNumber==0) {
+			Application.LoadLevel("0-startScreen");
 
+		}
+
+		if(levelNumber==1) {
+			Application.LoadLevel("1-levelPicker");
+
+		}
 
 		if(levelNumber==2) {
 			Application.LoadLevel("2-level");
