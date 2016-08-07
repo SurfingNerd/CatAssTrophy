@@ -5,10 +5,12 @@ using UnityEngine.EventSystems;
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
 	public static GameObject itemBeingDragged;
+
+	public GameObject itemToDrag;
 	Vector3 startPosition;
 	Transform startParent;
 
-	public Vector3          positionToReturnTo;
+	public Vector3 positionToReturnTo;
 
 
 
@@ -21,6 +23,9 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		Debug.Log ("OnBeginDrag");
 
 
+
+		Debug.Log ("START" + itemToDrag.transform.position);
+
 	}
 
 	#endregion
@@ -31,6 +36,11 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	{
 		this.transform.position = eventData.position;
 		Debug.Log ("OnDrag" + eventData.position);
+		Debug.Log ("OnDrag" + Camera.main.ScreenToWorldPoint(Input.mousePosition));
+		//itemToDrag.transform.position = eventData.position;
+		itemToDrag.transform.localPosition = eventData.position;
+		//itemToDrag.transform.position = eventData.pointerCurrentRaycast.worldPosition;
+
 
 	}
 
@@ -42,8 +52,11 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	{
 		GetComponent<CanvasGroup>().blocksRaycasts = true;
 		//this.transform.position = positionToReturnTo;
-		Debug.Log ("OnEndDrag");
+		Debug.Log ("OnEndDrag" + itemToDrag.transform.position);
+		//itemToDrag.transform.position = eventData.position;
 
+		//960 , 520
+		itemToDrag.transform.localPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, itemToDrag.transform.localPosition);
 
 	}
 
