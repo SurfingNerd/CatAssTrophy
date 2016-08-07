@@ -7,8 +7,6 @@ public class DragHandler3D : MonoBehaviour {
 	private Vector3 offset;
 	private Vector3 scanPos;
 
-
-
 	void OnMouseDown()
 	{
 		screenPoint = Camera.main.WorldToScreenPoint(scanPos);

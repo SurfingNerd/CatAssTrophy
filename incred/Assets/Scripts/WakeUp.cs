@@ -19,7 +19,7 @@ public class WakeUp : MonoBehaviour {
 
         //Debug.Log("Collision");
 
-        if (coll.gameObject.tag == "Player" || coll.gameObject.tag == "wakeobject")
+        if (coll.gameObject.tag == "Player" || coll.gameObject.tag == "wakeobject" )
         {
             //GameObject waki = Instantiate(wokenOwner);
             //Vector3 sub = new Vector3(0, -2, 0);
