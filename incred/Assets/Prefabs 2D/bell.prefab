@@ -99,7 +99,7 @@ Transform:
   m_GameObject: {fileID: 1000012088520290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.2782643, y: 2.2782662, z: 2.2782662}
+  m_LocalScale: {x: 0.21967722, y: 0.21967743, z: 0.21967743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010733506736}
@@ -114,7 +114,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011309397708}
   m_UseAutoMass: 1
-  m_Mass: 15.880458
+  m_Mass: 0.14764711
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -131,7 +131,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010103181318}
   m_UseAutoMass: 1
-  m_Mass: 2.0465007
+  m_Mass: 0.019027147
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -288,7 +288,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 1.18}
   m_AutoConfigureDistance: 1
-  m_Distance: 5.7184477
+  m_Distance: 0.55139035
   m_MaxDistanceOnly: 0
 --- !u!233 &233000011891842548
 HingeJoint2D:
@@ -304,7 +304,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 1.46}
-  m_ConnectedAnchor: {x: 0.045565285, y: -0.52400136}
+  m_ConnectedAnchor: {x: 0.0043935445, y: -0.050525814}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
