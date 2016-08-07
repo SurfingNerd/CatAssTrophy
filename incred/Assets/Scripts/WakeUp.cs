@@ -35,12 +35,17 @@ public class WakeUp : MonoBehaviour {
             //audiosrc.volume();
 
             //Debug.Log("OldPOS: " + transform.position + " NewPOS" + breakPot.transform.position);
+			StartCoroutine(LoadAfterTime(5));
+
+
+
 
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-	
+	public IEnumerator LoadAfterTime(int seconds)
+	{
+		yield return new WaitForSeconds(seconds);
+		Application.LoadLevel("1-levelPicker");
 	}
 }
