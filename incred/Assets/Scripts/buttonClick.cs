@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class buttonClick : MonoBehaviour {
+	bool started = false;
+	Vector3 startVector;
 
 	public void RestartLevel(){
 		// Save game data
@@ -12,10 +14,19 @@ public class buttonClick : MonoBehaviour {
 	}
 
 	public void startLevel(){
-		// Save game data
-		GameObject cat = GameObject.Find("coolCat");
-		cat.GetComponent<Rigidbody2D> ().isKinematic = false;
 
+		if (!started) {
+			// Save game data
+			GameObject cat = GameObject.Find ("coolCat");
+			startVector = cat.transform.position;
+			cat.GetComponent<Rigidbody2D> ().isKinematic = false;
+			started = true;
+		} else {
+		
+			GameObject cat = GameObject.Find ("coolCat");
+			cat.transform.position = startVector;
+		
+		}
 		// Close game
 	}
 
