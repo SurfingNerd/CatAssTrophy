@@ -37,7 +37,7 @@ Transform:
   m_GameObject: {fileID: 1000012450814414}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7000652, y: 0.7000652, z: 0.7000652}
+  m_LocalScale: {x: 0.06750243, y: 0.06750243, z: 0.06750243}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -50,7 +50,7 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012450814414}
   m_UseAutoMass: 1
-  m_Mass: 42.573837
+  m_Mass: 0.39582628
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
