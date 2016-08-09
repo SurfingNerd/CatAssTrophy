@@ -8,6 +8,7 @@ TagManager:
   - potflower
   - wakeobject
   - owner
+  - baloonPopping
   layers:
   - Default
   - TransparentFX
