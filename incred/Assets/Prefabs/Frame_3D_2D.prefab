@@ -23,7 +23,7 @@ GameObject:
   - 65: {fileID: 65000011522255252}
   - 23: {fileID: 23000011658684390}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Cube 3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ GameObject:
   - 65: {fileID: 65000013840733970}
   - 23: {fileID: 23000013055270932}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Cube 3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +119,7 @@ GameObject:
   - 65: {fileID: 65000013667090270}
   - 23: {fileID: 23000013514993222}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Cube 3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ GameObject:
   - 23: {fileID: 23000013716433822}
   - 61: {fileID: 61000011491885424}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Cube 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -170,7 +170,7 @@ GameObject:
   - 65: {fileID: 65000010949413848}
   - 23: {fileID: 23000010261682216}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Cube 3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +188,7 @@ GameObject:
   - 23: {fileID: 23000013313404680}
   - 61: {fileID: 61000011263391952}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Cube 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,7 +206,7 @@ GameObject:
   - 23: {fileID: 23000012720468888}
   - 61: {fileID: 61000013608684668}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Cube 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,7 +224,7 @@ GameObject:
   - 23: {fileID: 23000012119846998}
   - 61: {fileID: 61000013010780534}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Cube 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,8 +280,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010550658264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.00098566, y: -0.8503, z: 0}
+  m_LocalScale: {x: 0.901425, y: 0.9240157, z: 0.85849965}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010821607468}
@@ -352,7 +352,7 @@ Transform:
   m_GameObject: {fileID: 1000010300140438}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20.53, y: 0.45, z: 1}
+  m_LocalScale: {x: 20.53, y: 0.45, z: -0.04}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010821607468}
@@ -765,8 +765,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 249.01}
+  m_Size: {x: 1, y: 1, z: 9.86}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65000011522255252
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -789,8 +789,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 249.01}
+  m_Size: {x: 1, y: 1, z: 9.93}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &65000013840733970
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -801,5 +801,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 249.01}
+  m_Size: {x: 1, y: 1, z: 9.93}
+  m_Center: {x: 0, y: 0, z: 0}
