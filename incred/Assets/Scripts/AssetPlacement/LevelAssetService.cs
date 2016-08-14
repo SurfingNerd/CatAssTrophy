@@ -6,7 +6,7 @@ namespace AssetPlacement
 {
     public class LevelAssetService : MonoBehaviour
     {
-
+        //public Canvas PlacementCanvas;
 
         public int AssetCount = 1;
         public LevelAsset[] Assets = new LevelAsset[1];
@@ -18,8 +18,11 @@ namespace AssetPlacement
         // Use this for initialization
         void Start()
         {
+            
 
         }
+
+     
 
         // Update is called once per frame
         void Update()
@@ -30,8 +33,12 @@ namespace AssetPlacement
 
         void OnValidate()
         {
-            LevelAsset[] oldAssets = Assets;
+            //if ( PlacementCanvas == null)
+            //{
+            //     //Canvas[] foundCanvas  = GameObject.FindObjectsOfType<Canvas>();
+            //}
 
+            LevelAsset[] oldAssets = Assets;
             Assets = new LevelAsset[AssetCount];
 
             int j = 0;
