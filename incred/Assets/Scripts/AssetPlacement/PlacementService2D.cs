@@ -191,8 +191,8 @@ namespace AssetPlacement
             
             var renderers = previewObject.GetComponents<SpriteRenderer>();
 
-            Transform oldTransform = previewObject.GetComponent<Transform>();
-            Destroy(oldTransform);
+            //Transform oldTransform = previewObject.GetComponent<Transform>();
+            //Destroy(oldTransform);
 
             //TODO: correct scaling of the asset.
             //RectTransform rectTransfor = previewObject.AddComponent<RectTransform>();
