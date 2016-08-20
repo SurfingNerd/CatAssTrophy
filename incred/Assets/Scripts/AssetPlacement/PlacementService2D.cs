@@ -12,14 +12,14 @@ namespace AssetPlacement
         private LevelAssetService m_levelAssetService;
 
         private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
-        private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
+        //private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
 
         public bool useSlot;
         //public Material BackgroundMaterial;
         //public Material TextMaterial;
 
-        //private GameObject m_currentSelectedPrefab;
-        private LevelAsset m_currentSelectedAsset;
+        private GameObject m_currentDraggingObject;
+        private LevelAsset m_currentDraggingAsset;
         
         public GameObject PlacementPanel;
         public GameObject SlotPrefab;
@@ -63,64 +63,114 @@ namespace AssetPlacement
         // Update is called once per frame
         void Update()
         {
-            //if (m_currentSelectedAsset != null)
-            //{
+            //cases:
+            //user is currently not dragging an object.
+            //----------------------------
+            //  Case: starting selection.
+            //  if no object is currently drag and dropped, and the user hits an asset in the selection tool
+            //  instantiate a new one and let the user drag and drop it.
+            //  -------------------------
+            //  Case: moving allready instantiated object
+            //  setting clicked object as currently dragged
+            //  update possition of currently dragged and dropped objects
+            //  ------------------------
+            //user is currently dragging an object.
+            //-----------------------------
+            //  Case: all
+            //  dragged object position gets updated
+            //  Object colering is updated (valid, invalid position)
+            //----------------------------
+            //user is ending a drag drop operation.(dropping)
+            //  Case: within the scene
+            //  let the preview object on its position
+            //  update colors
+            //--------------------------------
+            //user is ending drag and drop operation outside the scene. 
+            //  case: outside the scene
+            //  remove the preview object (it's put back into the selection tool)
+            //  means: Update the selection tool ( + 1 count of objects)
 
-            Vector3? vector = GeometryHelper.GetPositionFromMouse();
+
+
+            //Vector3? vector = GeometryHelper.GetPositionFromMouse();
+            Vector3 screenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
+            Vector3? vector = Camera.main.ScreenToWorldPoint(screenPos);
             if (vector.HasValue)
             {
+                bool startDrag = false;
+                startDrag = Input.GetMouseButtonDown(0);
+
+                //todo: Mobile support.
+
                 //create new if not exist
-                if (currentPreviewObject == null && m_currentSelectedAsset != null && m_currentSelectedAsset.Prefab != null)
-                {
-                    currentPreviewObject = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
-                    MakePreviewObject(currentPreviewObject);
-                }
+                //if (currentPreviewObject == null)
+                //{
+                //    currentPreviewObject = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
+                //    MakePreviewObject(currentPreviewObject);
+                //}
 
-                if (currentPreviewObject != null)
-                {
-                    currentPreviewObject.transform.position = vector.Value;
-                }
+                //currentPreviewObject.transform.position = vector.Value;
 
-                if (Input.GetMouseButtonDown(0))
+                if (startDrag)
                 {
 
                     bool selectOtherPrefab = false;
+                    //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    //RaycastHit[] allHits = Physics.RaycastAll(ray);
 
-                    RaycastHit[] allHits = Physics.RaycastAll(ray);
+                    //foreach (RaycastHit hit in allHits)
+                    //{
+                    //    Debug.Log(hit);
+                    //    if (m_assetSelectors.ContainsKey(hit.transform.gameObject))
+                    //    {
+                    //        LevelAsset asset = m_assetSelectors[hit.transform.gameObject];
+                    //        m_currentSelectedAsset = asset;
+                    //        selectOtherPrefab = true;
+                    //    }
+                    //}
 
-                    foreach (RaycastHit hit in allHits)
+                    Vector2 clickPoint2D = new Vector2(vector.Value.x, vector.Value.y);
+
+                    foreach (var item in m_assetSelectors)
                     {
-                        if (m_assetSelectors.ContainsKey(hit.transform.gameObject))
+                        Vector3 itemPos = item.Key.transform.position;
+                        Renderer renderer = item.Key.GetComponent<Renderer>();
+
+                        if (renderer.bounds.Contains(clickPoint2D))
                         {
-                            LevelAsset asset = m_assetSelectors[hit.transform.gameObject];
-                            m_currentSelectedAsset = asset;
-                            selectOtherPrefab = true;
+                            m_currentDraggingAsset = item.Value;
                         }
                     }
 
 
-                    if (!selectOtherPrefab && m_currentSelectedAsset != null)
+                    if (m_currentDraggingAsset != null)
                     {
-                        if (m_currentSelectedAsset.Count > 0)
-                        {
-                            GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
-                            m_currentSelectedAsset.Count--;
-                            obj.transform.position = vector.Value;
-                            PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
-
-                            UpdateCountText(m_currentSelectedAsset);
-                            //Build();
-
-                            if (m_currentSelectedAsset.Count <= 0)
-                            {
-                                m_currentSelectedAsset = null;
-                                Destroy(currentPreviewObject);
-                                currentPreviewObject = null;
-                            }
-                        }
+                        m_currentDraggingObject = Instantiate(m_currentDraggingAsset.Prefab);
+                        m_currentDraggingObject.transform.position = clickPoint2D;
+                        MakePreviewObject(m_currentDraggingObject);
                     }
+
+                    //if (!selectOtherPrefab && m_currentSelectedAsset != null)
+                    //{
+                    //    if (m_currentSelectedAsset.Count > 0)
+                    //    {
+                    //        GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
+                    //        m_currentSelectedAsset.Count--;
+                    //        obj.transform.position = vector.Value;
+                    //        PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
+
+                    //        UpdateCountText(m_currentSelectedAsset);
+                    //        //Build();
+
+                    //        if (m_currentSelectedAsset.Count <= 0)
+                    //        {
+                    //            m_currentSelectedAsset = null;
+                    //            Destroy(currentPreviewObject);
+                    //            currentPreviewObject = null;
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
@@ -161,14 +211,38 @@ namespace AssetPlacement
                             RectTransform slotsRect = slot.GetComponent<RectTransform>();
                             slotsRect.localScale = Vector3.one;
 
+                            
 
-                            GameObject previewObject = Instantiate(asset.Prefab);
+                            if (asset.Count > 1)
+                            {
+                                GameObject textHolder = new GameObject();
+                                textHolder.transform.parent = slot.transform;
+                                TextMesh text = textHolder.AddComponent<TextMesh>();
+                                text.offsetZ = -5; //???
+                                text.alignment = TextAlignment.Center;
+                                text.anchor = TextAnchor.MiddleLeft;
 
-                            //previewObject.GetComponents<SpriteRenderer>();
-                            MakePreviewObject(previewObject);
-                            MakeUILayerObject(previewObject);
-                            //previewObject.AddComponent<CanvasRenderer>();
-                            previewObject.transform.SetParent(slot.transform);
+                                //textHolder.AddComponent<Tran>
+                                //textHolder.transform.parent = slotsRect;
+
+                                //UnityEngine.UI.Text  text = textHolder.AddComponent<UnityEngine.UI.Text>();
+                                text.text = "X " + asset.Count;
+
+                                //UnityEngine.UI.Text text = //UnityEngine.UI.Text.Instantiate<UnityEngine.UI.Text>
+                            }
+
+                            GameObject assetSelectorObject = Instantiate(asset.Prefab);
+                            MakePreviewObject(assetSelectorObject);
+                            MakeUILayerObject(assetSelectorObject);
+                            m_assetSelectors.Add(assetSelectorObject, asset);
+
+                            // solution with button click, not very handy, would prefer drag and drop.
+
+                            //UnityEngine.UI.Button button = slot.AddComponent<UnityEngine.UI.Button>();
+                            //button.onClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+                            //button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => OnClicked(asset)));
+
+                            assetSelectorObject.transform.SetParent(slot.transform);
                         }
                         else
                         {
@@ -184,6 +258,11 @@ namespace AssetPlacement
                     }
                 }
             }
+        }
+
+        private void OnClicked(LevelAsset asset)
+        {
+            Debug.Log(asset.Prefab.name + " clicked.");            
         }
 
         private void MakeUILayerObject(GameObject previewObject)
@@ -229,6 +308,7 @@ namespace AssetPlacement
         {
             foreach (var item in GetAll<Behaviour>(currentPreviewObject))
             {
+                //Debug.Log(item + " deactivated");
                 item.enabled = false;
             }
         }

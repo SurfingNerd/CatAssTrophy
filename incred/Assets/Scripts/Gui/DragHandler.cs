@@ -7,8 +7,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	public static GameObject itemBeingDragged;
 
 	public GameObject itemToDrag;
-	Vector3 startPosition;
-	Transform startParent;
+	//Vector3 startPosition;
+	//Transform startParent;
 
 	public Vector3 positionToReturnTo;
 

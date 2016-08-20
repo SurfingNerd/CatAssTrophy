@@ -12,7 +12,7 @@ namespace AssetPlacement
         private LevelAssetService m_levelAssetService;
 
         private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
-        private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
+        //private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
 
         public Material BackgroundMaterial;
         public Material TextMaterial;

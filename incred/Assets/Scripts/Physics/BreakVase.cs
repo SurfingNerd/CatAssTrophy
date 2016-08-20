@@ -16,7 +16,7 @@ public class BreakVase : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D coll)
     {
 
-        Debug.Log("Collision");
+        //Debug.Log("Collision");
 
         if (coll.gameObject.tag == "potflower" || coll.gameObject.tag == "Player" || coll.gameObject.tag == "wakeobject" || coll.gameObject.tag == "owner")
         {
@@ -37,7 +37,7 @@ public class BreakVase : MonoBehaviour {
 
             //breakPot.transform.position = startposition;
 
-            Debug.Log("OldPOS: "+ transform.position + " NewPOS"+ breakPot.transform.position);
+            //Debug.Log("OldPOS: "+ transform.position + " NewPOS"+ breakPot.transform.position);
             
 
             //breakPot.transform.position = new Vector3((float)30.02227, (float) -20.9, 0);

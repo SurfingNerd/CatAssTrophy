@@ -36,7 +36,7 @@ public class nextLevel : MonoBehaviour {
 	public IEnumerator LoadAfterTime(int seconds)
 	{
 		yield return new WaitForSeconds(seconds);
-		Application.LoadLevel("1-levelPicker");
+        LevelManager.LoadLevel(1);
 	}
 
 }

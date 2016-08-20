@@ -1,41 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DragHandler3D : MonoBehaviour {
+public class DragHandler3D : MonoBehaviour
+{
 
-	private Vector3 screenPoint;
-	private Vector3 offset;
-	private Vector3 scanPos;
+    private Vector3 screenPoint;
+    //private Vector3 offset;
+    private Vector3 scanPos = Vector3.zero;
 
-	void OnMouseDown()
-	{
-		screenPoint = Camera.main.WorldToScreenPoint(scanPos);
-
-
-		//offset = scanPos - Camera.main.ScreenToWorldPoint(
-		//	new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
-
-	}
+    void OnMouseDown()
+    {
+        screenPoint = Camera.main.WorldToScreenPoint(scanPos);
 
 
-	void OnMouseDrag()
-	{
-		Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
+        //offset = scanPos - Camera.main.ScreenToWorldPoint(
+        //	new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+
+    }
 
 
-//		Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
-		Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
-		transform.position = curPosition;
+    void OnMouseDrag()
+    {
+        Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 
-	}
 
-	public void addThisObject()
-	{
+        //		Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
+        Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint);
+        transform.position = curPosition;
 
-		Debug.Log ("moving..");
-		transform.position = new Vector3 (5f, 3f, -2.0f);
+    }
 
-	}
+    public void addThisObject()
+    {
+
+        Debug.Log("moving..");
+        transform.position = new Vector3(5f, 3f, -2.0f);
+
+    }
 
 
 
