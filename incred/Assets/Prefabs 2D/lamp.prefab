@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012503118474}
   m_Layer: 0
-  m_Name: lamp_base
+  m_Name: lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
