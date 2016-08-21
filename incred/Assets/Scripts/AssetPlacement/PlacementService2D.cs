@@ -12,7 +12,8 @@ namespace AssetPlacement
         private LevelAssetService m_levelAssetService;
         private bool m_isCurrentlyPlayingGame;
         private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
-        public Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
+        private Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
+        private Dictionary<LevelAsset, List<Vector3>> m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
 
         //private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
 
@@ -179,7 +180,6 @@ namespace AssetPlacement
             }
             else //not started to drag an object from the asset selection
             {
-                
                 //maybe user is dragging existing object ?
                 foreach (var kvp in m_inScenePreviewObjects)
                 {
@@ -233,8 +233,30 @@ namespace AssetPlacement
         public void StartGame()
         {
             m_isCurrentlyPlayingGame = true; //<< deactivates drag and drop.
-
+            m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
+            List<GameObject> objectsToDestroy = new List<GameObject>();
             //TODO: replace the preview objects with real objects that have physics reanabled.
+            foreach (var kvp in m_inScenePreviewObjects)
+            {
+                List<Vector3> positions = new List<Vector3>();
+                m_positionsAtLastGameStart.Add(kvp.Key, positions);
+                foreach (var previewObject in kvp.Value)
+                {
+                    GameObject go = (GameObject)Instantiate(kvp.Key.Prefab);
+                    go.transform.position = previewObject.transform.position;
+                    positions.Add(previewObject.transform.position);
+                    objectsToDestroy.Add(previewObject);
+                }
+            }
+
+            m_inScenePreviewObjects.Clear();
+            m_currentDraggingObject = null;
+            m_currentDraggingAsset = null;
+
+            foreach (GameObject obj in objectsToDestroy)
+            {
+                Destroy(obj);
+            }
         }
 
         private void UpdateCountText(LevelAsset asset)
@@ -297,13 +319,6 @@ namespace AssetPlacement
                             MakePreviewObject(assetSelectorObject);
                             MakeUILayerObject(assetSelectorObject);
                             m_assetSelectors.Add(assetSelectorObject, asset);
-
-                            // solution with button click, not very handy, would prefer drag and drop.
-
-                            //UnityEngine.UI.Button button = slot.AddComponent<UnityEngine.UI.Button>();
-                            //button.onClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-                            //button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => OnClicked(asset)));
-
                             assetSelectorObject.transform.SetParent(slot.transform);
                         }
                         else
