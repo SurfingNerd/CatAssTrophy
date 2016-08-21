@@ -10,8 +10,10 @@ namespace AssetPlacement
     public class PlacementService2D : MonoBehaviour
     {
         private LevelAssetService m_levelAssetService;
-
+        private bool m_isCurrentlyPlayingGame;
         private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
+        public Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
+
         //private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
 
         public bool useSlot;
@@ -170,12 +172,72 @@ namespace AssetPlacement
                     m_currentDraggingObject = Instantiate(m_currentDraggingAsset.Prefab);
                     m_currentDraggingAsset.Count--;
                     m_currentDraggingObject.transform.position = clickPoint2D;
+                    RememberPreviewObject(m_currentDraggingObject, m_currentDraggingAsset);
                     MakePreviewObject(m_currentDraggingObject);
+                    UpdateButtonUI(m_currentDraggingAsset);
+                }
+            }
+            else //not started to drag an object from the asset selection
+            {
+                
+                //maybe user is dragging existing object ?
+                foreach (var kvp in m_inScenePreviewObjects)
+                {
+                    foreach (GameObject obj in kvp.Value)
+                    {
+                        Renderer renderer = obj.GetComponent<Renderer>();
+                        if (renderer.bounds.Contains(clickPoint2D))
+                        {
+                            m_currentDraggingAsset = kvp.Key;
+                            m_currentDraggingObject = obj;
+                            m_currentDraggingObject.transform.position = clickPoint2D;
+                            break;
+                        }
+                    }
+                    if (m_currentDraggingObject != null)
+                    {
+                        break;
+                    }
                 }
             }
         }
 
-        private void UpdateCountText(LevelAsset m_currentSelectedAsset)
+        private void RememberPreviewObject(GameObject gameObject, LevelAsset asset)
+        {
+            //if (m_inScenePreviewObjects.ContainsKey(asset)
+            List<GameObject> gameObjects = null;
+            if (!m_inScenePreviewObjects.TryGetValue(asset, out gameObjects ))
+            {
+                gameObjects = new List<GameObject>();
+                m_inScenePreviewObjects.Add(asset, gameObjects);
+            }
+
+            gameObjects.Add(gameObject);
+        }
+
+        private void UpdateButtonUI(LevelAsset currentDraggingAsset)
+        {
+            if (currentDraggingAsset.Count > 0)
+            {
+                //TODO: Undo make button gray
+            }
+            else
+            {
+                var kvp = m_assetSelectors.Where(x => x.Value == currentDraggingAsset).First() ;
+                //todo: make buton gray
+            }
+
+            UpdateCountText(currentDraggingAsset);
+        }
+
+        public void StartGame()
+        {
+            m_isCurrentlyPlayingGame = true; //<< deactivates drag and drop.
+
+            //TODO: replace the preview objects with real objects that have physics reanabled.
+        }
+
+        private void UpdateCountText(LevelAsset asset)
         {
             //todo: 
             //update m_textMeshes
