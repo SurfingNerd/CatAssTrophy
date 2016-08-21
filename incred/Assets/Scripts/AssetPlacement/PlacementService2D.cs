@@ -58,7 +58,7 @@ namespace AssetPlacement
         }
 
         GameObject currentPreviewObject;
-
+        
 
         // Update is called once per frame
         void Update()
@@ -92,64 +92,28 @@ namespace AssetPlacement
 
 
 
-            //Vector3? vector = GeometryHelper.GetPositionFromMouse();
             Vector3 screenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-            Vector3? vector = Camera.main.ScreenToWorldPoint(screenPos);
-            if (vector.HasValue)
+            Vector3 vector = Camera.main.ScreenToWorldPoint(screenPos);
+            Vector2 clickPoint2D = new Vector2(vector.x, vector.y);
+
+            if (m_currentDraggingObject == null)
             {
-                bool startDrag = false;
-                startDrag = Input.GetMouseButtonDown(0);
-
-                //todo: Mobile support.
-
-                //create new if not exist
-                //if (currentPreviewObject == null)
-                //{
-                //    currentPreviewObject = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
-                //    MakePreviewObject(currentPreviewObject);
-                //}
-
-                //currentPreviewObject.transform.position = vector.Value;
-
-                if (startDrag)
+                if (Input.GetMouseButtonDown(0))
                 {
-
-                    bool selectOtherPrefab = false;
-                    //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                    //RaycastHit[] allHits = Physics.RaycastAll(ray);
-
-                    //foreach (RaycastHit hit in allHits)
-                    //{
-                    //    Debug.Log(hit);
-                    //    if (m_assetSelectors.ContainsKey(hit.transform.gameObject))
-                    //    {
-                    //        LevelAsset asset = m_assetSelectors[hit.transform.gameObject];
-                    //        m_currentSelectedAsset = asset;
-                    //        selectOtherPrefab = true;
-                    //    }
-                    //}
-
-                    Vector2 clickPoint2D = new Vector2(vector.Value.x, vector.Value.y);
-
-                    foreach (var item in m_assetSelectors)
-                    {
-                        Vector3 itemPos = item.Key.transform.position;
-                        Renderer renderer = item.Key.GetComponent<Renderer>();
-
-                        if (renderer.bounds.Contains(clickPoint2D))
-                        {
-                            m_currentDraggingAsset = item.Value;
-                        }
-                    }
-
-
-                    if (m_currentDraggingAsset != null)
-                    {
-                        m_currentDraggingObject = Instantiate(m_currentDraggingAsset.Prefab);
-                        m_currentDraggingObject.transform.position = clickPoint2D;
-                        MakePreviewObject(m_currentDraggingObject);
-                    }
+                    StartDrag(clickPoint2D);
+                }       
+            }
+            else //currently dragging
+            {
+                if (Input.GetMouseButton(0))
+                {
+                    UpdateDragPosition(clickPoint2D);
+                }
+                else //exiting drag
+                {
+                    EndDrag(clickPoint2D);
+                }
+            }
 
                     //if (!selectOtherPrefab && m_currentSelectedAsset != null)
                     //{
@@ -171,6 +135,42 @@ namespace AssetPlacement
                     //        }
                     //    }
                     //}
+        }
+
+        private void EndDrag(Vector2 clickPoint2D)
+        {
+            Debug.Log("EndDrag " + clickPoint2D);
+            m_currentDraggingObject = null;
+            m_currentDraggingAsset = null;
+        }
+
+        private void UpdateDragPosition(Vector2 clickPoint2D)
+        {
+            m_currentDraggingObject.transform.position = clickPoint2D;
+        }
+
+        private void StartDrag(Vector2 clickPoint2D)
+        {
+            //check if starting draging
+            foreach (var item in m_assetSelectors)
+            {
+                Vector3 itemPos = item.Key.transform.position;
+                Renderer renderer = item.Key.GetComponent<Renderer>();
+
+                if (renderer.bounds.Contains(clickPoint2D))
+                {
+                    m_currentDraggingAsset = item.Value;
+                }
+            }
+
+            if (m_currentDraggingAsset != null)
+            {
+                if (m_currentDraggingAsset.Count > 0)
+                {
+                    m_currentDraggingObject = Instantiate(m_currentDraggingAsset.Prefab);
+                    m_currentDraggingAsset.Count--;
+                    m_currentDraggingObject.transform.position = clickPoint2D;
+                    MakePreviewObject(m_currentDraggingObject);
                 }
             }
         }
