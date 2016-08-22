@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System;
 
 namespace Assets.Scripts.Levels
 {
@@ -8,8 +8,11 @@ namespace Assets.Scripts.Levels
     {
         public void StartGame()
         {
-            Rigidbody2D rigBody = GetComponent<Rigidbody2D>();
-            rigBody.constraints = RigidbodyConstraints2D.None;
+            if (isActiveAndEnabled)
+            {
+                Rigidbody2D rigBody = GetComponent<Rigidbody2D>();
+                rigBody.constraints = RigidbodyConstraints2D.None;
+            }
         }
 
     }

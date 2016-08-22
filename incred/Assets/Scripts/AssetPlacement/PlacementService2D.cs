@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Assets.Scripts.Levels;
 
 namespace AssetPlacement
 {
@@ -15,9 +16,6 @@ namespace AssetPlacement
         private Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
         private Dictionary<LevelAsset, List<Vector3>> m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
 
-        //private Dictionary<LevelAsset, TextMesh> m_textMeshes = new Dictionary<LevelAsset, TextMesh>();
-
-        public bool useSlot;
         //public Material BackgroundMaterial;
         //public Material TextMaterial;
 
@@ -32,8 +30,6 @@ namespace AssetPlacement
         public List<System.Collections.Generic.KeyValuePair<LevelAsset, GameObject>> PlacedAssets
             = new List<KeyValuePair<LevelAsset, GameObject>>();
 
-
-
         [HideInInspector]
         public LevelAsset[] AvailableAssets;
 
@@ -41,7 +37,6 @@ namespace AssetPlacement
         void Start()
         {
             Build();
-
         }
 
         void Awake()
@@ -59,9 +54,6 @@ namespace AssetPlacement
                 Debug.LogError(typeof(LevelAssetService).FullName + " not defined!");
             }
         }
-
-        GameObject currentPreviewObject;
-        
 
         // Update is called once per frame
         void Update()
@@ -121,9 +113,44 @@ namespace AssetPlacement
 
         private void EndDrag(Vector2 clickPoint2D)
         {
-            Debug.Log("EndDrag " + clickPoint2D);
+            if (m_isCurrentlyPlayingGame)
+            {
+                return;
+            }
+            //If object is dropped out of scene, it gets brought back to asset selection.
+            if (m_currentDraggingObject != null)
+            {
+                RectTransform rectTransform = PlacementPanel.GetComponent<RectTransform>();
+                Vector3[] localcorners = new Vector3[4];
+                rectTransform.GetLocalCorners(localcorners);
+
+                float biggestX = float.MinValue;
+                //Vector3[] globalCorners = new Vector3[4];
+                for (int i = 0; i <= 4; i++)
+                {
+                    Vector3 globalCorner = rectTransform.TransformPoint(localcorners[0]);
+                    if (globalCorner.x > biggestX)
+                    {
+                        biggestX = globalCorner.x;
+                    }
+                }
+                
+                //be sure to even track positions right outside the panel.
+                Rect rect = new Rect(biggestX, -1000, 1000, 2000);
+
+                //Canvas canvas = PlacementPanel as 
+                bool contains = rect.Contains(clickPoint2D);
+                Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
+                if (contains)
+                {
+                    m_currentDraggingAsset.Count++;
+                    m_inScenePreviewObjects[m_currentDraggingAsset].Remove(m_currentDraggingObject);
+                    Destroy(m_currentDraggingObject);
+                }
+            }
             m_currentDraggingObject = null;
             m_currentDraggingAsset = null;
+
         }
 
         private void UpdateDragPosition(Vector2 clickPoint2D)
@@ -133,6 +160,10 @@ namespace AssetPlacement
 
         private void StartDrag(Vector2 clickPoint2D)
         {
+            if (m_isCurrentlyPlayingGame)
+            {
+                return;
+            }
             //check if starting draging
             foreach (var item in m_assetSelectors)
             {
@@ -247,17 +278,7 @@ namespace AssetPlacement
 
         private void Build()
         {
-
             Cleanup();
-
-            //float x = -427;
-            //float y = -320;
-
-            //float x = 1;
-            //float y = 1;
-
-            //float x = 0.5f;
-            //float y = 0.5f;
 
             for (int i = 0; i < AvailableAssets.Length; i++)
             {
@@ -267,46 +288,27 @@ namespace AssetPlacement
                 {
                     if (asset.Prefab != null && asset.Count > 0)
                     {
-                        if (useSlot)
+                        GameObject slot = (GameObject)Instantiate(SlotPrefab);
+                        slot.transform.SetParent(this.PlacementPanel.transform);
+                        RectTransform slotsRect = slot.GetComponent<RectTransform>();
+                        slotsRect.localScale = Vector3.one;
+       
+                        if (asset.Count > 1)
                         {
-                            GameObject slot = (GameObject)Instantiate(SlotPrefab);
-                            slot.transform.SetParent(this.PlacementPanel.transform);
-                            RectTransform slotsRect = slot.GetComponent<RectTransform>();
-                            slotsRect.localScale = Vector3.one;
-
-                            
-
-                            if (asset.Count > 1)
-                            {
-                                GameObject textHolder = new GameObject();
-                                textHolder.transform.parent = slot.transform;
-                                TextMesh text = textHolder.AddComponent<TextMesh>();
-                                text.offsetZ = -5; //???
-                                text.alignment = TextAlignment.Center;
-                                text.anchor = TextAnchor.MiddleLeft;
-
-                                //textHolder.AddComponent<Tran>
-                                //textHolder.transform.parent = slotsRect;
-
-                                //UnityEngine.UI.Text  text = textHolder.AddComponent<UnityEngine.UI.Text>();
-                                text.text = "X " + asset.Count;
-
-                                //UnityEngine.UI.Text text = //UnityEngine.UI.Text.Instantiate<UnityEngine.UI.Text>
-                            }
-
-                            GameObject assetSelectorObject = Instantiate(asset.Prefab);
-                            MakePreviewObject(assetSelectorObject);
-                            MakeUILayerObject(assetSelectorObject);
-                            m_assetSelectors.Add(assetSelectorObject, asset);
-                            assetSelectorObject.transform.SetParent(slot.transform);
+                            GameObject textHolder = new GameObject();
+                            textHolder.transform.parent = slot.transform;
+                            TextMesh text = textHolder.AddComponent<TextMesh>();
+                            text.offsetZ = -5; //???
+                            text.alignment = TextAlignment.Center;
+                            text.anchor = TextAnchor.MiddleLeft;
+                            text.text = "X " + asset.Count;
                         }
-                        else
-                        {
-                            GameObject previewObject = Instantiate(asset.Prefab);
-                            MakePreviewObject(previewObject);
-                           // previewObject.AddComponent<CanvasRenderer>();
-                            previewObject.transform.SetParent(PlacementPanel.transform);
-                        }
+
+                        GameObject assetSelectorObject = Instantiate(asset.Prefab);
+                        MakePreviewObject(assetSelectorObject);
+                        MakeUILayerObject(assetSelectorObject);
+                        m_assetSelectors.Add(assetSelectorObject, asset);
+                        assetSelectorObject.transform.SetParent(slot.transform);
                     }
                     else
                     {
@@ -316,48 +318,32 @@ namespace AssetPlacement
             }
         }
 
-        private void OnClicked(LevelAsset asset)
-        {
-            Debug.Log(asset.Prefab.name + " clicked.");            
-        }
-
         private void MakeUILayerObject(GameObject previewObject)
-        {
-            
+        {      
             var renderers = previewObject.GetComponents<SpriteRenderer>();
-
-            //Transform oldTransform = previewObject.GetComponent<Transform>();
-            //Destroy(oldTransform);
-
-            //TODO: correct scaling of the asset.
-            //RectTransform rectTransfor = previewObject.AddComponent<RectTransform>();
-
-
+            
             //SpriteRenderer thisRenderer = GetComponent<SpriteRenderer>();
             foreach (var spriteRenderer  in renderers)
             {
-                //spriteRenderer.sortingLayerID = thisRenderer.sortingLayerID;
-                //spriteRenderer.sortingLayerName = thisRenderer.sortingLayerName;
                 spriteRenderer.sortingLayerName = "UI";
                 spriteRenderer.sortingOrder = 1;
             }
-
         }
 
         private void Cleanup()
         {
+            //TODO: remove ?!
             foreach (var item in this.m_assetSelectors)
             {
                 Destroy(item.Key);
             }
-
             this.m_assetSelectors.Clear();
         }
 
         private void MakePreviewObject(GameObject currentPreviewObject)
         {
             DeactivateAllBehaviors(currentPreviewObject);
-            DeactivateAllRigidBodies(currentPreviewObject);
+            DeactivateAllRigidBodies(currentPreviewObject);          
         }
 
         private void DeactivateAllBehaviors(GameObject currentPreviewObject)
