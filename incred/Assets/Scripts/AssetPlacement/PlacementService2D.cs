@@ -26,7 +26,7 @@ namespace AssetPlacement
         
         public GameObject PlacementPanel;
         public GameObject SlotPrefab;
-        public Color Color;
+        public Color AssetCountTextColor;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
@@ -288,13 +288,13 @@ namespace AssetPlacement
                 //textHolder.transform.localScale = new Vector3(1, 1, 1);
                 TextMesh text = textHolder.AddComponent<TextMesh>();
                 text.offsetZ = -5; //???
-                text.fontSize = 64;
+                text.fontSize = 72;
                 text.characterSize = 0.1f;
                 textHolder.transform.position = new Vector3(-2.5f, 0, 0);
                 text.alignment = TextAlignment.Center;
                 text.anchor = TextAnchor.MiddleLeft;
                 text.text = "X " + asset.Count;
-                text.color = Color;
+                text.color = AssetCountTextColor;
                 m_textHolders.Add(asset, textHolder);
                 m_textElements.Add(asset, text);
             }
