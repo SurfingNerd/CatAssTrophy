@@ -22,6 +22,7 @@ GameObject:
   - 212: {fileID: 212000014240956812}
   - 50: {fileID: 50000011285201340}
   - 60: {fileID: 60000011532111652}
+  - 114: {fileID: 114000013562507444}
   m_Layer: 9
   m_Name: pillow
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012450814414}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.5602117, y: 0.64287716, z: 0}
   m_LocalScale: {x: 0.0526519, y: 0.0526519, z: 0.0526519}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -49,8 +50,8 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012450814414}
-  m_UseAutoMass: 1
-  m_Mass: 0.24082075
+  m_UseAutoMass: 0
+  m_Mass: 0.7
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -58,7 +59,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!60 &60000011532111652
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -67,27 +68,41 @@ PolygonCollider2D:
   m_GameObject: {fileID: 1000012450814414}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bfbe1c987434dc14086c5432c80b8fb9, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   m_Points:
     m_Paths:
     - - {x: 9.607931, y: -1.7604523}
-      - {x: 10.372287, y: -0.82922906}
+      - {x: 10.230464, y: -0.97104967}
       - {x: 9.894052, y: -0.000929296}
       - {x: 8.906834, y: 0.33965242}
       - {x: 8.047678, y: 1.471102}
-      - {x: 5.351095, y: 2.8158493}
-      - {x: 0.3207909, y: 3.4417253}
-      - {x: -4.9497414, y: 2.987783}
+      - {x: 5.895215, y: 2.570998}
+      - {x: 2.6754806, y: 3.3258598}
+      - {x: -1.9100872, y: 3.3601077}
+      - {x: -4.949744, y: 2.9333708}
       - {x: -8.302767, y: 1.5652552}
       - {x: -9.085413, y: 0.2999642}
       - {x: -9.995042, y: -0.17782903}
       - {x: -10.25075, y: -1.1064126}
       - {x: -9.241179, y: -1.9891875}
       - {x: -7.8223276, y: -1.9378357}
+      - {x: -2.578894, y: -3.048227}
+      - {x: 2.3717105, y: -3.0504503}
       - {x: 7.3310494, y: -1.9943562}
+--- !u!114 &114000013562507444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012450814414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a81b9c19127de749a139e5c93817e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000014240956812
 SpriteRenderer:
   m_ObjectHideFlags: 1

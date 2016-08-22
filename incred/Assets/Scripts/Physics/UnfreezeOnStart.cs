@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Levels;
 
-namespace Levels
+namespace Physics
 {
     public class UnfreezeOnStart : MonoBehaviour, IStartableGameObject
     {

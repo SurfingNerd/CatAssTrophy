@@ -45,7 +45,7 @@ namespace AssetPlacement
             for (int i = 0; i < oldAssets.Length; i++)
             {
                 LevelAsset old = oldAssets[i];
-                if (old.Prefab != null)
+                if (old != null && old.Prefab != null)
                 {
                     Assets[j++] = old;
                 }
