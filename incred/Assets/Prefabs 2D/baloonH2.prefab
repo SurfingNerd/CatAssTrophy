@@ -41,7 +41,7 @@ GameObject:
   - 114: {fileID: 114000011846943876}
   - 114: {fileID: 114000014205171012}
   m_Layer: 0
-  m_Name: baloonNoRope
+  m_Name: baloonH2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -177,7 +177,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: d3dce3ffc2e677e42b93086e9ca4ee13, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c7cabef310757e6449c47fb3f15ca8d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
