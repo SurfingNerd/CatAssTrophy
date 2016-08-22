@@ -38,6 +38,9 @@ namespace AssetPlacement
             //     //Canvas[] foundCanvas  = GameObject.FindObjectsOfType<Canvas>();
             //}
 
+            if (Assets.Length == AssetCount)
+                return;
+
             LevelAsset[] oldAssets = Assets;
             Assets = new LevelAsset[AssetCount];
 
@@ -47,7 +50,10 @@ namespace AssetPlacement
                 LevelAsset old = oldAssets[i];
                 if (old != null && old.Prefab != null)
                 {
-                    Assets[j++] = old;
+                    if (j <= Assets.Length - 1)
+                    {
+                        Assets[j++] = old;
+                    }
                 }
             }
         }
