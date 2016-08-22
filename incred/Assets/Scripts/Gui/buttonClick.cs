@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Levels;
 
 public class buttonClick : MonoBehaviour {
 	bool started = false;
@@ -23,6 +24,25 @@ public class buttonClick : MonoBehaviour {
         }
     }
 
+    private void StartStartableGameObjects()
+    {
+        Object[] objs = GameObject.FindObjectsOfType(typeof(GameObject));
+
+        foreach (var obj in objs)
+        {
+            if (obj is GameObject)
+            {
+                GameObject go = obj as GameObject;
+                var startableObjects = go.GetComponents<IStartableGameObject>();
+                foreach (IStartableGameObject startableObject in startableObjects)
+                {
+                    startableObject.StartGame();
+                }
+            }
+        }
+
+    }
+
 	public void startLevel(){
 
 		if (!started) {
@@ -32,6 +52,7 @@ public class buttonClick : MonoBehaviour {
 			cat.GetComponent<Rigidbody2D> ().isKinematic = false;
 			started = true;
             StartPlacementService();
+            StartStartableGameObjects();
         } else {
 		
 			GameObject cat = GameObject.Find ("coolCat");

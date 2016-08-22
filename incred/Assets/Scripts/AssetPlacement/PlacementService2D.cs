@@ -117,27 +117,6 @@ namespace AssetPlacement
                     EndDrag(clickPoint2D);
                 }
             }
-
-                    //if (!selectOtherPrefab && m_currentSelectedAsset != null)
-                    //{
-                    //    if (m_currentSelectedAsset.Count > 0)
-                    //    {
-                    //        GameObject obj = Instantiate(m_currentSelectedAsset.Prefab) as GameObject;
-                    //        m_currentSelectedAsset.Count--;
-                    //        obj.transform.position = vector.Value;
-                    //        PlacedAssets.Add(new KeyValuePair<LevelAsset, GameObject>(m_currentSelectedAsset, obj));
-
-                    //        UpdateCountText(m_currentSelectedAsset);
-                    //        //Build();
-
-                    //        if (m_currentSelectedAsset.Count <= 0)
-                    //        {
-                    //            m_currentSelectedAsset = null;
-                    //            Destroy(currentPreviewObject);
-                    //            currentPreviewObject = null;
-                    //        }
-                    //    }
-                    //}
         }
 
         private void EndDrag(Vector2 clickPoint2D)
