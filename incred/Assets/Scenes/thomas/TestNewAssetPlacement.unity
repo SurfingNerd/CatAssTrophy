@@ -1882,8 +1882,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd5a04dd7351d84f9644a40cbc6d3fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AssetCount: 1
+  AssetCount: 2
   Assets:
+  - Prefab: {fileID: 1000012784478794, guid: e3dc59e0b3aada94fb36551058026b6b, type: 2}
+    Count: 1
   - Prefab: {fileID: 0}
     Count: 1
 --- !u!1001 &1212240934

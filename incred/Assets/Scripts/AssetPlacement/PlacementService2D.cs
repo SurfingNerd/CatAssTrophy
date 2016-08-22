@@ -11,9 +11,12 @@ namespace AssetPlacement
     {
         private LevelAssetService m_levelAssetService;
         private bool m_isCurrentlyPlayingGame;
-        private Dictionary<GameObject, LevelAsset> m_assetSelectors = new Dictionary<GameObject, LevelAsset>();
+        private Dictionary<LevelAsset, GameObject> m_assetSelectors = new Dictionary<LevelAsset, GameObject>();
         private Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
         private Dictionary<LevelAsset, List<Vector3>> m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
+
+        private Dictionary<LevelAsset, GameObject> m_textHolders = new Dictionary<LevelAsset, GameObject>();
+        private Dictionary<LevelAsset, TextMesh> m_textElements = new Dictionary<LevelAsset, TextMesh>();
 
         //public Material BackgroundMaterial;
         //public Material TextMaterial;
@@ -23,6 +26,7 @@ namespace AssetPlacement
         
         public GameObject PlacementPanel;
         public GameObject SlotPrefab;
+        public Color Color;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
@@ -142,6 +146,7 @@ namespace AssetPlacement
                 if (contains)
                 {
                     m_currentDraggingAsset.Count++;
+                    UpdateCountText(m_currentDraggingAsset);
                     m_inScenePreviewObjects[m_currentDraggingAsset].Remove(m_currentDraggingObject);
                     Destroy(m_currentDraggingObject);
                 }
@@ -165,11 +170,11 @@ namespace AssetPlacement
             //check if starting draging
             foreach (var item in m_assetSelectors)
             {
-                Renderer renderer = item.Key.GetComponent<Renderer>();
+                Renderer renderer = item.Value.GetComponent<Renderer>();
 
                 if (renderer.bounds.Contains(clickPoint2D))
                 {
-                    m_currentDraggingAsset = item.Value;
+                    m_currentDraggingAsset = item.Key;
                 }
             }
 
@@ -230,7 +235,6 @@ namespace AssetPlacement
             }
             else
             {
-                var kvp = m_assetSelectors.Where(x => x.Value == currentDraggingAsset).First() ;
                 //todo: make buton gray
             }
 
@@ -270,7 +274,35 @@ namespace AssetPlacement
         {
             //todo: 
             //update m_textMeshes
+            //if (asset.Count > 1)
+            //{
+            if (m_textHolders.ContainsKey(asset))
+            {
+                TextMesh text = m_textElements[asset];
+                text.text = "X " + asset.Count;
+            }
+            else
+            {
+                GameObject textHolder = new GameObject();
+                textHolder.transform.parent = m_assetSelectors[asset].transform;  //slot.transform;
+                //textHolder.transform.localScale = new Vector3(1, 1, 1);
+                TextMesh text = textHolder.AddComponent<TextMesh>();
+                text.offsetZ = -5; //???
+                text.fontSize = 64;
+                text.characterSize = 0.1f;
+                textHolder.transform.position = new Vector3(-2.5f, 0, 0);
+                text.alignment = TextAlignment.Center;
+                text.anchor = TextAnchor.MiddleLeft;
+                text.text = "X " + asset.Count;
+                text.color = Color;
+                m_textHolders.Add(asset, textHolder);
+                m_textElements.Add(asset, text);
+            }
+            //}
+            //else
+            //{
 
+            //}
         }
 
         private void Build()
@@ -289,23 +321,14 @@ namespace AssetPlacement
                         slot.transform.SetParent(this.PlacementPanel.transform);
                         RectTransform slotsRect = slot.GetComponent<RectTransform>();
                         slotsRect.localScale = Vector3.one;
-       
-                        if (asset.Count > 1)
-                        {
-                            GameObject textHolder = new GameObject();
-                            textHolder.transform.parent = slot.transform;
-                            TextMesh text = textHolder.AddComponent<TextMesh>();
-                            text.offsetZ = -5; //???
-                            text.alignment = TextAlignment.Center;
-                            text.anchor = TextAnchor.MiddleLeft;
-                            text.text = "X " + asset.Count;
-                        }
-
+                        
                         GameObject assetSelectorObject = Instantiate(asset.Prefab);
                         MakePreviewObject(assetSelectorObject);
                         MakeUILayerObject(assetSelectorObject);
-                        m_assetSelectors.Add(assetSelectorObject, asset);
+                        m_assetSelectors.Add(asset, assetSelectorObject);
                         assetSelectorObject.transform.SetParent(slot.transform);
+
+                        UpdateButtonUI(asset);
                     }
                     else
                     {
@@ -332,7 +355,7 @@ namespace AssetPlacement
             //TODO: remove ?!
             foreach (var item in this.m_assetSelectors)
             {
-                Destroy(item.Key);
+                Destroy(item.Value);
             }
             this.m_assetSelectors.Clear();
         }
