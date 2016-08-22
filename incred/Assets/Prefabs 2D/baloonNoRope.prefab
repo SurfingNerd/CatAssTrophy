@@ -39,6 +39,7 @@ GameObject:
   - 50: {fileID: 50000013620385556}
   - 58: {fileID: 58000011576741896}
   - 114: {fileID: 114000011846943876}
+  - 114: {fileID: 114000014205171012}
   m_Layer: 0
   m_Name: baloonNoRope
   m_TagString: Untagged
@@ -106,7 +107,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!58 &58000011576741896
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -136,6 +137,17 @@ MonoBehaviour:
     type: 2}
   force: 1
   radius: 10
+--- !u!114 &114000014205171012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012784478794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a81b9c19127de749a139e5c93817e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212000010730427310
 SpriteRenderer:
   m_ObjectHideFlags: 1

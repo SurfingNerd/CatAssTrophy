@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace Assets.Scripts.Levels
+namespace Levels
 {
     public class UnfreezeOnStart : MonoBehaviour, IStartableGameObject
     {

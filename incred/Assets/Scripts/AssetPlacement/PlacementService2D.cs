@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections;
 using System;
 using System.Collections.Generic;
-using Assets.Scripts.Levels;
 
 namespace AssetPlacement
 {
@@ -88,7 +87,7 @@ namespace AssetPlacement
 
 
             Vector3 screenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-            Vector3 vector = Camera.main.ScreenToWorldPoint(screenPos);
+            Vector3 vector = UnityEngine.Camera.main.ScreenToWorldPoint(screenPos);
             Vector2 clickPoint2D = new Vector2(vector.x, vector.y);
 
             if (m_currentDraggingObject == null)
@@ -138,9 +137,8 @@ namespace AssetPlacement
                 //be sure to even track positions right outside the panel.
                 Rect rect = new Rect(biggestX, -1000, 1000, 2000);
 
-                //Canvas canvas = PlacementPanel as 
                 bool contains = rect.Contains(clickPoint2D);
-                Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
+                //Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
                 if (contains)
                 {
                     m_currentDraggingAsset.Count++;
@@ -167,7 +165,6 @@ namespace AssetPlacement
             //check if starting draging
             foreach (var item in m_assetSelectors)
             {
-                Vector3 itemPos = item.Key.transform.position;
                 Renderer renderer = item.Key.GetComponent<Renderer>();
 
                 if (renderer.bounds.Contains(clickPoint2D))

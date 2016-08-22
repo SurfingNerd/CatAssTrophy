@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Levels;
 
-public class buttonHandler : MonoBehaviour {
+namespace Gui
+{
+    public class buttonHandler : MonoBehaviour
+    {
+        public void LoadLevel(int levelNumber)
+        {
+            LevelManager.LoadLevel(levelNumber);
+        }
 
-//	GameManager 
-
-
-	public void LoadLevel(int levelNumber) {
-
-        LevelManager.LoadLevel(levelNumber);
-	}
-
+    }
 }

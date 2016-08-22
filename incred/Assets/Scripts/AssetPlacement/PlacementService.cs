@@ -82,9 +82,9 @@ namespace AssetPlacement
 
                     bool selectOtherPrefab = false;
 
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                    RaycastHit[] allHits = Physics.RaycastAll(ray);
+                    RaycastHit[] allHits = UnityEngine.Physics.RaycastAll(ray);
 
                     foreach (RaycastHit hit in allHits)
                     {
@@ -236,7 +236,7 @@ namespace AssetPlacement
         public static Vector3? GetPositionFromMouse()
         {
             Plane plane = new UnityEngine.Plane(Vector3.back, Vector3.zero);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
 
             float center;
 

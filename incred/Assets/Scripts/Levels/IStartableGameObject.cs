@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Levels
+namespace Levels
 {
     interface IStartableGameObject
     {

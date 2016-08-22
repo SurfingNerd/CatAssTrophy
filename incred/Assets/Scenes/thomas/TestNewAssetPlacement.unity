@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37356392, g: 0.38112, b: 0.35887662, a: 1}
+  m_IndirectSpecularColor: {r: 0.37356418, g: 0.38112003, b: 0.35887662, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1560,7 +1560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e9b962b962b334ab950280e60ebb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useSlot: 1
   PlacementPanel: {fileID: 1176630356}
   SlotPrefab: {fileID: 1000010021028148, guid: c283a68ebd0a2f948856d7270f1e108e, type: 2}
   AvailableAssets: []
@@ -1575,12 +1574,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd5a04dd7351d84f9644a40cbc6d3fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AssetCount: 2
+  AssetCount: 3
   Assets:
   - Prefab: {fileID: 1000012614775912, guid: a329dcb8a1059804a82f11ecff167394, type: 2}
     Count: 4
   - Prefab: {fileID: 1000011340041300, guid: ece44dc21364965419deb0fdce33dd13, type: 2}
     Count: 4
+  - Prefab: {fileID: 1000012784478794, guid: c69ec439296e50444bf7e25abbe1f1f3, type: 2}
+    Count: 2
 --- !u!1001 &1212240934
 Prefab:
   m_ObjectHideFlags: 0
@@ -1631,22 +1632,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c35e8e5ae8f08dc4ea6020c0e1f9342c, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1286424631 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1000012614775912, guid: a329dcb8a1059804a82f11ecff167394,
-    type: 2}
-  m_PrefabInternal: {fileID: 2063336482}
---- !u!114 &1286424633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1286424631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 239aa308745e24849bf2ff82ff36cb1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1287550447
 GameObject:
   m_ObjectHideFlags: 0
