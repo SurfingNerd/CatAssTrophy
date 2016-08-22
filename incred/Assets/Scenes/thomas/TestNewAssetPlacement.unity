@@ -1420,7 +1420,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011441232378, guid: c69ec439296e50444bf7e25abbe1f1f3, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -3.97
+      value: -3.69
       objectReference: {fileID: 0}
     - target: {fileID: 4000011441232378, guid: c69ec439296e50444bf7e25abbe1f1f3, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1868,8 +1868,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e9b962b962b334ab950280e60ebb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlacementPanel: {fileID: 0}
-  SlotPrefab: {fileID: 0}
+  PlacementPanel: {fileID: 1176630356}
+  SlotPrefab: {fileID: 1000010021028148, guid: c283a68ebd0a2f948856d7270f1e108e, type: 2}
+  AssetCountTextColor: {r: 1, g: 1, b: 1, a: 0.303}
   AvailableAssets: []
 --- !u!114 &1176630362
 MonoBehaviour:
@@ -1886,7 +1887,7 @@ MonoBehaviour:
   Assets:
   - Prefab: {fileID: 1000012784478794, guid: e3dc59e0b3aada94fb36551058026b6b, type: 2}
     Count: 1
-  - Prefab: {fileID: 0}
+  - Prefab: {fileID: 1000012784478794, guid: c69ec439296e50444bf7e25abbe1f1f3, type: 2}
     Count: 1
 --- !u!1001 &1212240934
 Prefab:
