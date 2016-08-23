@@ -18,15 +18,24 @@ namespace AssetPlacement
         private Dictionary<LevelAsset, GameObject> m_textHolders = new Dictionary<LevelAsset, GameObject>();
         private Dictionary<LevelAsset, TextMesh> m_textElements = new Dictionary<LevelAsset, TextMesh>();
 
-        //public Material BackgroundMaterial;
-        //public Material TextMaterial;
-
         private GameObject m_currentDraggingObject;
         private LevelAsset m_currentDraggingAsset;
-        
+        private bool m_isDraggingCamera;
+
+        // Click on the plane in world space for camera movement interaction.
+        private Vector2 m_lastCameraClickPosition;
+
         public GameObject PlacementPanel;
         public GameObject SlotPrefab;
         public Color AssetCountTextColor;
+        
+        //Camera
+        public UnityEngine.Camera Camera;
+        public float MinCameraSize;
+        public float MaxCameraSize;
+        public float MaxCameraOutOfScene;
+        public float ZoomSpeed;
+        public GameObject Wall;
 
         [HideInInspector]
         // Key = Prefab, Value = Instance
@@ -45,9 +54,6 @@ namespace AssetPlacement
         void Awake()
         {
             m_levelAssetService = GetComponent<LevelAssetService>();
-            //ButtonPlacementCanvas =  GetComponent<Canvas>();
-
-
             if (m_levelAssetService != null)
             {
                 AvailableAssets = m_levelAssetService.Assets;
@@ -94,16 +100,32 @@ namespace AssetPlacement
             Vector3 vector = UnityEngine.Camera.main.ScreenToWorldPoint(screenPos);
             Vector2 clickPoint2D = new Vector2(vector.x, vector.y);
 
-            if (m_currentDraggingObject == null)
+            bool isButtonHold = Input.GetMouseButton(0);
+            bool isButtonClicked = Input.GetMouseButtonDown(0);
+
+            ApplyCameraZoom();
+            
+            if (m_isDraggingCamera)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (isButtonHold)
+                {
+                    ApplyCameraMovement(clickPoint2D);
+                }
+                else
+                {
+                    m_isDraggingCamera = false;
+                }
+            }
+            else if(m_currentDraggingObject == null)
+            {
+                if (isButtonClicked)
                 {
                     StartDrag(clickPoint2D);
                 }       
             }
             else //currently dragging
             {
-                if (Input.GetMouseButton(0))
+                if (isButtonHold)
                 {
                     UpdateDragPosition(clickPoint2D);
                 }
@@ -112,6 +134,29 @@ namespace AssetPlacement
                     EndDrag(clickPoint2D);
                 }
             }
+        }
+
+        private void ApplyCameraZoom()
+        {
+            float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * - ZoomSpeed);
+
+            if (cameraSize > MaxCameraSize)
+            {
+                Camera.orthographicSize = MaxCameraSize;
+            }
+            else if (cameraSize < MinCameraSize)
+            {
+                Camera.orthographicSize = MinCameraSize;
+            }
+            else
+            {
+                Camera.orthographicSize = cameraSize;
+            }
+        }
+
+        private void ApplyCameraMovement(Vector2 clickPoint2D)
+        {
+            Camera.transform.position = Camera.transform.position + ((Vector3)m_lastCameraClickPosition - (Vector3)clickPoint2D);
         }
 
         private void EndDrag(Vector2 clickPoint2D)
@@ -165,6 +210,8 @@ namespace AssetPlacement
         {
             if (m_isCurrentlyPlayingGame)
             {
+                m_isDraggingCamera = true;
+                m_lastCameraClickPosition = clickPoint2D;
                 return;
             }
             //check if starting draging
@@ -175,6 +222,7 @@ namespace AssetPlacement
                 if (renderer.bounds.Contains(clickPoint2D))
                 {
                     m_currentDraggingAsset = item.Key;
+                    m_isDraggingCamera = false;
                 }
             }
 
@@ -188,6 +236,7 @@ namespace AssetPlacement
                     RememberPreviewObject(m_currentDraggingObject, m_currentDraggingAsset);
                     MakePreviewObject(m_currentDraggingObject);
                     UpdateButtonUI(m_currentDraggingAsset);
+                    m_isDraggingCamera = false;
                 }
             }
             else //not started to drag an object from the asset selection
@@ -203,6 +252,7 @@ namespace AssetPlacement
                             m_currentDraggingAsset = kvp.Key;
                             m_currentDraggingObject = obj;
                             m_currentDraggingObject.transform.position = clickPoint2D;
+                            m_isDraggingCamera = false;
                             break;
                         }
                     }
@@ -211,6 +261,12 @@ namespace AssetPlacement
                         break;
                     }
                 }
+            }
+
+            if (m_currentDraggingAsset == null)
+            {
+                m_isDraggingCamera = true;
+                m_lastCameraClickPosition = clickPoint2D;
             }
         }
 
