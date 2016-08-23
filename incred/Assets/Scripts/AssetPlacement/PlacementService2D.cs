@@ -272,10 +272,6 @@ namespace AssetPlacement
 
         private void UpdateCountText(LevelAsset asset)
         {
-            //todo: 
-            //update m_textMeshes
-            //if (asset.Count > 1)
-            //{
             if (m_textHolders.ContainsKey(asset))
             {
                 TextMesh text = m_textElements[asset];
@@ -298,11 +294,6 @@ namespace AssetPlacement
                 m_textHolders.Add(asset, textHolder);
                 m_textElements.Add(asset, text);
             }
-            //}
-            //else
-            //{
-
-            //}
         }
 
         private void Build()
