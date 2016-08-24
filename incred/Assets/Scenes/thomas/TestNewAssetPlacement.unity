@@ -1864,6 +1864,13 @@ MonoBehaviour:
   PlacementPanel: {fileID: 1176630356}
   SlotPrefab: {fileID: 1000010021028148, guid: c283a68ebd0a2f948856d7270f1e108e, type: 2}
   AssetCountTextColor: {r: 1, g: 1, b: 1, a: 0.303}
+  LevelAssetService: {fileID: 1176630362}
+  Camera: {fileID: 2051385743}
+  MinCameraSize: 1
+  MaxCameraSize: 10
+  MaxCameraOutOfScene: 0
+  ZoomSpeed: 0.1
+  Wall: {fileID: 950264101}
   AvailableAssets: []
 --- !u!114 &1176630362
 MonoBehaviour:

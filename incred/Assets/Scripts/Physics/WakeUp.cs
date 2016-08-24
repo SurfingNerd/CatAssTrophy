@@ -51,7 +51,7 @@ namespace Physics
         public IEnumerator LoadAfterTime(int seconds)
         {
             yield return new WaitForSeconds(seconds);
-            LevelManager.LoadLevel(1);
+            LevelManager.LoadNextLevel();
         }
     }
 }

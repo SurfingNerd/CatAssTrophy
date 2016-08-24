@@ -53,7 +53,7 @@ namespace Levels
 		//Initializes the game for each level.
 		void InitGame()
 		{
-            LevelManager.LoadLevel(level);
+            LevelManager.LoadStartScreen();
 		}
 
 

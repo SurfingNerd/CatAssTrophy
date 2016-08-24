@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 namespace Levels
 {
-    public class nextLevel : MonoBehaviour
-    {
-
+    public class GoToLevelPicker : MonoBehaviour {
 
         public int waitSeconds = 5;
 
@@ -37,7 +36,7 @@ namespace Levels
         public IEnumerator LoadAfterTime(int seconds)
         {
             yield return new WaitForSeconds(seconds);
-            LevelManager.LoadNextLevel();
+            LevelManager.LoadLevelPicker();
         }
     }
 }
