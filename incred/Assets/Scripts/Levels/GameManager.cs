@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Completed
+namespace Levels
 {
 	using System.Collections.Generic;      
 
@@ -12,8 +12,8 @@ namespace Completed
 	{
 
 		[SerializeField]
-		private GameConfig gameConfig;
-		private LevelManager levelManager;
+		private GameConfig gameConfig = new GameConfig();
+		
 
 
 
@@ -43,7 +43,7 @@ namespace Completed
 			//Get a component reference to the attached BoardManager script
 			//boardScript = GetComponent<BoardManager>();
 
-			levelManager = GetComponent<LevelManager> ();
+			//levelManager = GetComponent<LevelManager> ();
 
 
 			//Call the InitGame function to initialize the first level 
@@ -53,8 +53,7 @@ namespace Completed
 		//Initializes the game for each level.
 		void InitGame()
 		{
-			Debug.Log ("hihi" + level);
-			levelManager.LoadLevel(level);
+            LevelManager.LoadStartScreen();
 		}
 
 

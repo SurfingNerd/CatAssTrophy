@@ -1,42 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class nextLevel : MonoBehaviour {
-	
-
-	public int waitSeconds = 5;
-
-	private bool rotating = false; 
-	GameObject bg;
-	// Use this for initialization
-	void Start () {
-		bg = GameObject.Find ("hiding-background");
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-		//Debug.Log (bg.transform.rotation.eulerAngles.x);
-
-		if (rotating && bg.transform.rotation.eulerAngles.x < 180) {
-			bg.transform.Rotate(1,0,0);
+namespace Levels
+{
+    public class nextLevel : MonoBehaviour
+    {
 
 
-		}
+        public int waitSeconds = 5;
 
-		if (Input.anyKey) {
+        private bool rotating = false;
+        GameObject bg;
+        // Use this for initialization
+        void Start()
+        {
+            bg = GameObject.Find("hiding-background");
+        }
 
-			rotating = true; 
-			StartCoroutine(LoadAfterTime(waitSeconds));
+        // Update is called once per frame
+        void Update()
+        {
+            //Debug.Log (bg.transform.rotation.eulerAngles.x);
 
+            if (rotating && bg.transform.rotation.eulerAngles.x < 180)
+            {
+                bg.transform.Rotate(1, 0, 0);
+            }
 
-		}
-	}
+            if (Input.anyKey)
+            {
+                rotating = true;
+                StartCoroutine(LoadAfterTime(waitSeconds));
+            }
+        }
 
-	public IEnumerator LoadAfterTime(int seconds)
-	{
-		yield return new WaitForSeconds(seconds);
-		Application.LoadLevel("1-levelPicker");
-	}
-
+        public IEnumerator LoadAfterTime(int seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            LevelManager.LoadNextLevel();
+        }
+    }
 }

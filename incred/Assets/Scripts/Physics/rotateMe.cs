@@ -1,36 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class rotateMe : MonoBehaviour {
+namespace Physics
+{
 
-	public float rotationSpeed = 0.1f; 
-	public float moveSpeed = 0.1f; 
-	public int direction = 0;
+    public class rotateMe : MonoBehaviour
+    {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        public float rotationSpeed = 0.1f;
+        public float moveSpeed = 0.1f;
+        public int direction = 0;
 
-		if (direction == 0){
-		transform.position += Vector3.left * moveSpeed;
-		}
-		else if (direction == 1) {
-		transform.position += Vector3.right * moveSpeed;
-		}
-		transform.Rotate (0,0,rotationSpeed);
+        // Use this for initialization
+        void Start()
+        {
 
-		//transform.Rotate(Vector3.back * Time.deltaTime * rotationSpeed, Space.Self  );
+        }
 
-		//transform.Translate (Vector3.right * Time.deltaTime * moveSpeed );
+        // Update is called once per frame
+        void Update()
+        {
 
-	
+            if (direction == 0)
+            {
+                transform.position += Vector3.left * moveSpeed;
+            }
+            else if (direction == 1)
+            {
+                transform.position += Vector3.right * moveSpeed;
+            }
+            transform.Rotate(0, 0, rotationSpeed);
 
-//		Vector3 PlayerRot PlayerRot = Player.eulerAngles; Arrow.transform.rotation = Quaternion.Euler (0, 0, PlayerRot.y);
+            //transform.Rotate(Vector3.back * Time.deltaTime * rotationSpeed, Space.Self  );
+
+            //transform.Translate (Vector3.right * Time.deltaTime * moveSpeed );
 
 
-	}
+
+            //		Vector3 PlayerRot PlayerRot = Player.eulerAngles; Arrow.transform.rotation = Quaternion.Euler (0, 0, PlayerRot.y);
+
+
+        }
+    }
 }

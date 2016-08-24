@@ -49,6 +49,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014198151984}
+  m_Mass: 1
   m_UseAutoMass: 0
   m_Mass: 300
   m_LinearDrag: 0

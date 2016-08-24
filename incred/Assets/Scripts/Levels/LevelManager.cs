@@ -1,40 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelManager : MonoBehaviour {
+namespace Levels
+{
 
 
+    public class LevelManager : MonoBehaviour
+    {
+        /// <summary>
+        /// 0 if we are not in a real level, like start screen or level picker.
+        /// </summary>
+        public static int CurrentLevel;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        public static void LoadStartScreen()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("0-startScreen");
+        }
 
+        public static void LoadLevelPicker()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("1-levelPicker");
+        }
 
-	public void LoadLevel(int levelNumber) {
+        public static void LoadLevel(int levelNumber)
+        {
+            //todo: max levels ?
+            CurrentLevel = levelNumber;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(levelNumber.ToString() + "-level");
+        }
 
-		if(levelNumber==0) {
-			Debug.Log ("hihi 2" );
-			Application.LoadLevel("0-startScreen");
-
-		}
-
-		else if(levelNumber==1) {
-			Application.LoadLevel("1-levelselector");
-
-		}
-
-
-		else if(levelNumber==2) {
-			Application.LoadLevel("2-level");
-
-		}
-	}
-
+        public static void LoadNextLevel()
+        {
+            LoadLevel(CurrentLevel + 1);
+        }
+    }
 
 }
