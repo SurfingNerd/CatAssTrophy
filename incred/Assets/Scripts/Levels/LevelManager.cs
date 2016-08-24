@@ -12,6 +12,8 @@ namespace Levels
         /// </summary>
         public static int CurrentLevel;
 
+        public static readonly int MaxLevels = 100;
+
         public static void LoadStartScreen()
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("0-startScreen");
