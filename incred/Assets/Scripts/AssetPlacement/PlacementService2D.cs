@@ -26,7 +26,6 @@ namespace AssetPlacement
         private Vector2 m_lastCameraClickPosition;
 
         public GameObject PlacementPanel;
-        public GameObject SlotPrefab;
         public Color AssetCountTextColor;
         public LevelAssetService LevelAssetService;
 
@@ -127,20 +126,40 @@ namespace AssetPlacement
 
         private void ApplyCameraZoom()
         {
-            float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * - ZoomSpeed);
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * -ZoomSpeed);
 
-            if (cameraSize > MaxCameraSize)
-            {
-                Camera.orthographicSize = MaxCameraSize;
+                if (cameraSize > MaxCameraSize)
+                {
+                    Camera.orthographicSize = MaxCameraSize;
+                }
+                else if (cameraSize < MinCameraSize)
+                {
+                    Camera.orthographicSize = MinCameraSize;
+                }
+                else
+                {
+                    Camera.orthographicSize = cameraSize;
+                }
+
+                UpdateDragPanelToCamera();
             }
-            else if (cameraSize < MinCameraSize)
-            {
-                Camera.orthographicSize = MinCameraSize;
-            }
-            else
-            {
-                Camera.orthographicSize = cameraSize;
-            }
+        }
+
+        private void UpdateDragPanelToCamera()
+        {
+            Vector3 worldPointInTheMiddle = Camera.ScreenToWorldPoint(new Vector3(Camera.pixelWidth * 0.95f, Camera.pixelHeight / 2));
+            PlacementPanel.transform.position = new Vector3(worldPointInTheMiddle.x, worldPointInTheMiddle.y, 0);
+            //Debug.Log(worldPointInTheMiddle);
+
+            //Debug.Log(Camera.rect);
+            //Debug.Log(Camera.pixelWidth);
+            //Debug.Log(Camera.)
+            
+            //PlacementPanel.transform.transform.localScale = new Vector3(
+            //    Camera.rect.width, Camera.rect.height);
+            //Camera.rect
         }
 
         private void ApplyCameraMovement(Vector2 clickPoint2D)
@@ -157,25 +176,39 @@ namespace AssetPlacement
             //If object is dropped out of scene, it gets brought back to asset selection.
             if (m_currentDraggingObject != null)
             {
-                RectTransform rectTransform = PlacementPanel.GetComponent<RectTransform>();
-                Vector3[] localcorners = new Vector3[4];
-                rectTransform.GetLocalCorners(localcorners);
-
+                RectTransform rectTransform = PlacementPanel.transform as RectTransform;
                 float biggestX = float.MinValue;
-                //Vector3[] globalCorners = new Vector3[4];
-                for (int i = 0; i <= 4; i++)
+                bool contains = false;
+                if (rectTransform != null)
                 {
-                    Vector3 globalCorner = rectTransform.TransformPoint(localcorners[0]);
-                    if (globalCorner.x > biggestX)
+                    Vector3[] localcorners = new Vector3[4];
+                    rectTransform.GetLocalCorners(localcorners);
+
+                    for (int i = 0; i <= 4; i++)
                     {
-                        biggestX = globalCorner.x;
+                        Vector3 globalCorner = rectTransform.TransformPoint(localcorners[0]);
+                        if (globalCorner.x > biggestX)
+                        {
+                            biggestX = globalCorner.x;
+                        }
                     }
+                    Rect rect = new Rect(biggestX, -1000, 1000, 2000);
+                    contains = rect.Contains(clickPoint2D);
                 }
+                else
+                {
+                    Renderer renderer = PlacementPanel.GetComponent<Renderer>();
+                    contains = renderer.bounds.Contains(clickPoint2D);
+
+                    //PlacementPanel.
+                }
+                //todo: What if only a normal transform ? 
+                //get values from renderer ?
                 
                 //be sure to even track positions right outside the panel.
-                Rect rect = new Rect(biggestX, -1000, 1000, 2000);
+                
 
-                bool contains = rect.Contains(clickPoint2D);
+                
                 //Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
                 if (contains)
                 {
@@ -324,14 +357,16 @@ namespace AssetPlacement
             }
             else
             {
-                GameObject textHolder = new GameObject();
-                textHolder.transform.parent = m_assetSelectors[asset].transform;  //slot.transform;
-                //textHolder.transform.localScale = new Vector3(1, 1, 1);
+                GameObject textHolder = new GameObject("textHolder");
+
+                textHolder.transform.SetParent(m_assetSelectors[asset].transform);  //slot.transform;
+                textHolder.transform.localPosition = new Vector3(-24, 0, 0);
+
                 TextMesh text = textHolder.AddComponent<TextMesh>();
                 text.offsetZ = -5; //???
                 text.fontSize = 72;
                 text.characterSize = 0.1f;
-                textHolder.transform.position = new Vector3(-2.5f, 0, 0);
+                
                 text.alignment = TextAlignment.Center;
                 text.anchor = TextAnchor.MiddleLeft;
                 text.text = "X " + asset.Count;
@@ -345,6 +380,13 @@ namespace AssetPlacement
         {
             Cleanup();
 
+            //Renderer renderer = PlacementPanel.GetComponent<Renderer>();
+            // renderer.bounds.size.y
+            float availablesize = 0.8f;
+            
+            float currentY = availablesize / 2;
+            float stepY = availablesize / 4f;
+
             for (int i = 0; i < AvailableAssets.Length; i++)
             {
                 var asset = AvailableAssets[i];
@@ -353,20 +395,15 @@ namespace AssetPlacement
                 {
                     if (asset.Prefab != null && asset.Count > 0)
                     {
-                        GameObject slot = (GameObject)Instantiate(SlotPrefab);
-                        slot.transform.SetParent(this.PlacementPanel.transform);
-                        RectTransform slotsRect = slot.GetComponent<RectTransform>();
-                        slotsRect.localScale = Vector3.one;
-                        
                         GameObject assetSelectorObject = Instantiate(asset.Prefab);
-                        assetSelectorObject.transform.localScale = Vector3.one * 100;
-                        //RectTransform assetSelectorObject.AddComponent<RectTransform>();
-                        //assetSelectorObject.AddComponent<CanvasRenderer>();
+                        assetSelectorObject.transform.SetParent(PlacementPanel.transform);
+                        assetSelectorObject.transform.localPosition = new Vector3(0, currentY, 0);
+                        currentY -= stepY;
 
                         MakePreviewObject(assetSelectorObject);
+                        
                         MakeUILayerObject(assetSelectorObject);
                         m_assetSelectors.Add(asset, assetSelectorObject);
-                        assetSelectorObject.transform.SetParent(slot.transform);
 
                         UpdateButtonUI(asset);
                     }
@@ -410,7 +447,6 @@ namespace AssetPlacement
         {
             foreach (var item in GetAll<Behaviour>(currentPreviewObject))
             {
-                //Debug.Log(item + " deactivated");
                 item.enabled = false;
             }
         }
