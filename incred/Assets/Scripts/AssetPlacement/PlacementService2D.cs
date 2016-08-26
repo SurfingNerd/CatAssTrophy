@@ -13,7 +13,7 @@ namespace AssetPlacement
         private bool m_isCurrentlyPlayingGame;
         private Dictionary<LevelAsset, GameObject> m_assetSelectors = new Dictionary<LevelAsset, GameObject>();
         private Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
-        private Dictionary<LevelAsset, List<Vector3>> m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
+        //private Dictionary<LevelAsset, List<Vector3>> m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
 
         private Dictionary<LevelAsset, GameObject> m_textHolders = new Dictionary<LevelAsset, GameObject>();
         private Dictionary<LevelAsset, TextMesh> m_textElements = new Dictionary<LevelAsset, TextMesh>();
@@ -52,6 +52,7 @@ namespace AssetPlacement
             AvailableAssets = LevelAssetService.Assets;
             m_originalCameraSize = Camera.orthographicSize;
             Build();
+            ApplyPositions(StaticLocationPlacementStorage.GetLocationPlacementInfo());
         }
 
         // Update is called once per frame
@@ -274,12 +275,7 @@ namespace AssetPlacement
             {
                 if (m_currentDraggingAsset.Count > 0)
                 {
-                    m_currentDraggingObject = Instantiate(m_currentDraggingAsset.Prefab);
-                    m_currentDraggingAsset.Count--;
-                    m_currentDraggingObject.transform.position = clickPoint2D;
-                    RememberPreviewObject(m_currentDraggingObject, m_currentDraggingAsset);
-                    MakePreviewObject(m_currentDraggingObject);
-                    UpdateButtonUI(m_currentDraggingAsset);
+                    m_currentDraggingObject = PlaceAsset(clickPoint2D, m_currentDraggingAsset);
                     m_isDraggingCamera = false;
                 }
             }
@@ -344,13 +340,13 @@ namespace AssetPlacement
         public void StartGame()
         {
             m_isCurrentlyPlayingGame = true; //<< deactivates drag and drop.
-            m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
+            //m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
             List<GameObject> objectsToDestroy = new List<GameObject>();
             //TODO: replace the preview objects with real objects that have physics reanabled.
             foreach (var kvp in m_inScenePreviewObjects)
             {
                 List<Vector3> positions = new List<Vector3>();
-                m_positionsAtLastGameStart.Add(kvp.Key, positions);
+                //m_positionsAtLastGameStart.Add(kvp.Key, positions);
                 foreach (var previewObject in kvp.Value)
                 {
                     GameObject go = (GameObject)Instantiate(kvp.Key.Prefab);
@@ -427,6 +423,7 @@ namespace AssetPlacement
                     if (asset.Prefab != null && asset.Count > 0)
                     {
                         GameObject assetSelectorObject = Instantiate(asset.Prefab);
+                        
                         assetSelectorObject.transform.SetParent(PlacementPanel.transform);
                         assetSelectorObject.transform.localPosition = new Vector3(0, currentY, 0);
                         currentY -= stepY;
@@ -515,5 +512,52 @@ namespace AssetPlacement
 
             return components.Cast<T>();
         }
+
+        public List<PrefabPositionInfo> GetPositionInfos()
+        {
+            List<PrefabPositionInfo> result = new List<PrefabPositionInfo>();
+
+            foreach (var kvp in m_inScenePreviewObjects)
+            {
+                foreach (var obj in kvp.Value)
+                {
+                    result.Add(new PrefabPositionInfo() { Prefab = kvp.Key.Prefab, Position = obj.transform.position});
+                }
+            }
+
+            return result;
+        }
+
+        public void ApplyPositions(List<PrefabPositionInfo> positions)
+        {
+            foreach (PrefabPositionInfo posInfo in positions)
+            {
+                foreach (LevelAsset asset in AvailableAssets)
+                {
+                    if (asset.Prefab == posInfo.Prefab)
+                    {
+                        PlaceAsset(posInfo.Position, asset);
+                    }
+                }
+            }
+        }
+
+        private GameObject PlaceAsset(Vector3 position, LevelAsset asset)
+        {
+            GameObject result = Instantiate(asset.Prefab);
+            asset.Count--;
+            result.transform.position = position;
+            RememberPreviewObject(result, asset);
+            MakePreviewObject(result);
+            UpdateButtonUI(asset);
+
+            return result;
+        }
+    }
+
+    public class PrefabPositionInfo
+    {
+        public Vector3 Position;
+        public GameObject Prefab;
     }
 }

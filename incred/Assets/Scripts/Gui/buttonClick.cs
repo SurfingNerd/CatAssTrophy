@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Levels;
+using AssetPlacement;
+using System;
 
 namespace Gui
 {
@@ -35,7 +38,7 @@ namespace Gui
 
         private void StartStartableGameObjects()
         {
-            Object[] objs = GameObject.FindObjectsOfType(typeof(GameObject));
+            UnityEngine.Object[] objs = GameObject.FindObjectsOfType(typeof(GameObject));
 
             foreach (var obj in objs)
             {
@@ -57,11 +60,15 @@ namespace Gui
 
             if (!started)
             {
+                StorePositions();
+                RestartLevel();
+
                 // Save game data
                 GameObject cat = GameObject.Find("coolCat");
                 startVector = cat.transform.position;
                 cat.GetComponent<Rigidbody2D>().isKinematic = false;
                 started = true;
+                //ApplyPositions(savedPositions);
                 StartPlacementService();
                 StartStartableGameObjects();
             }
@@ -73,5 +80,17 @@ namespace Gui
 
             }
         }
+
+        private void StorePositions()
+        {
+            AssetPlacement.PlacementService2D service = FindObjectOfType<AssetPlacement.PlacementService2D>();
+            AssetPlacement.StaticLocationPlacementStorage.StoreLocationPlacementInfo(service.GetPositionInfos());
+        }
+
+        //private void ApplyPositions(List<PrefabPositionInfo> positions)
+        //{
+        //    AssetPlacement.PlacementService2D service = FindObjectOfType<AssetPlacement.PlacementService2D>();
+        //    service.ApplyPositions(positions);
+        //}
     }
 }
