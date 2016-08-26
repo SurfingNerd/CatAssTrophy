@@ -24,7 +24,7 @@ GameObject:
   - 61: {fileID: 61000011022121298}
   - 114: {fileID: 114000013420965840}
   m_Layer: 0
-  m_Name: RedBook
+  m_Name: BookRed
   m_TagString: wakeobject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

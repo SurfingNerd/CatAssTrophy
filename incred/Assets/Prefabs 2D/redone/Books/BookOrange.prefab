@@ -24,7 +24,7 @@ GameObject:
   - 61: {fileID: 61000012644103534}
   - 114: {fileID: 114000012853397000}
   m_Layer: 0
-  m_Name: OrangeBook
+  m_Name: BookOrange
   m_TagString: wakeobject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
