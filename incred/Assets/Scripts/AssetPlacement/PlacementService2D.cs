@@ -10,11 +10,9 @@ namespace AssetPlacement
     [RequireComponent(typeof(LevelAssetService))]
     public class PlacementService2D : MonoBehaviour
     {
-        //private LevelAssetService m_levelAssetService;
         private bool m_isCurrentlyPlayingGame;
         private Dictionary<LevelAsset, GameObject> m_assetSelectors = new Dictionary<LevelAsset, GameObject>();
         private Dictionary<LevelAsset, List<GameObject>> m_inScenePreviewObjects = new Dictionary<LevelAsset, List<GameObject>>();
-        //private Dictionary<LevelAsset, List<Vector3>> m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
 
         private Dictionary<LevelAsset, GameObject> m_textHolders = new Dictionary<LevelAsset, GameObject>();
         private Dictionary<LevelAsset, TextMesh> m_textElements = new Dictionary<LevelAsset, TextMesh>();
@@ -61,6 +59,8 @@ namespace AssetPlacement
             {
                 StartGame();
             }
+
+            UpdateDragPanelToCamera();
         }
 
         // Update is called once per frame
@@ -165,7 +165,7 @@ namespace AssetPlacement
 
         private void UpdateDragPanelToCamera()
         {
-            Vector3 worldPointInTheMiddle = Camera.ScreenToWorldPoint(new Vector3(Camera.pixelWidth * 0.95f, Camera.pixelHeight / 2));
+            Vector3 worldPointInTheMiddle = Camera.ScreenToWorldPoint(new Vector3(Camera.pixelWidth * 0.92f, Camera.pixelHeight / 2));
             PlacementPanel.transform.position = new Vector3(worldPointInTheMiddle.x, worldPointInTheMiddle.y, 0);
 
             float panelScaleFactor = Camera.orthographicSize / m_originalCameraSize;
