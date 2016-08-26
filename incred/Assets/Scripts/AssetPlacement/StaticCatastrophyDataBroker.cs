@@ -5,10 +5,12 @@ using System.Text;
 
 namespace AssetPlacement
 {
-    public class StaticLocationPlacementStorage
+    public class StaticCatastrophyDataBroker
     {
         private static List<PrefabPositionInfo> m_positionInfos;
-        private static string m_lastSceneName; 
+        private static string m_lastSceneName;
+
+        public static bool IsGameStartMode;
 
         public static void StoreLocationPlacementInfo(List<PrefabPositionInfo> positionInfos)
         {
@@ -27,6 +29,8 @@ namespace AssetPlacement
                 return new List<PrefabPositionInfo>();
             }
         }
+
+
 
     }
 }

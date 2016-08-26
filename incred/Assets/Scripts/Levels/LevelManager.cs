@@ -5,7 +5,7 @@ namespace Levels
 {
 
 
-    public class LevelManager : MonoBehaviour
+    public static class LevelManager
     {
         /// <summary>
         /// 0 if we are not in a real level, like start screen or level picker.

@@ -26,13 +26,10 @@ namespace Physics
         // Update is called once per frame
         void Update()
         {
-
             if (!forceIsApplied)
             {
-                Debug.Log("Applying forces.");
                 foreach (var item in m_bodies)
                 {
-                    Debug.Log("BOOM " + item);
                     //vector from the center of this explosion to center of body
                     //Vector2 start = new Vector2(this.transform.position.x, transform.position.y);
                     Vector2 dir = new Vector2(item.centerOfMass.x - this.transform.position.x, item.centerOfMass.y - this.transform.position.y);
@@ -40,8 +37,6 @@ namespace Physics
                     AddExplosionForce(item, 2, dir, radius);
                 }
             }
-
-            //Destroy(this);
         }
 
         public void AddExplosionForce(Rigidbody2D body, float expForce, Vector2 expPosition, float expRadius)

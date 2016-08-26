@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using AssetPlacement;
 
 namespace Levels.LevelPicker
 {
@@ -99,6 +100,7 @@ namespace Levels.LevelPicker
         {
             Text text = icon.transform.GetChild(0).gameObject.GetComponent<Text>();
             int levelNumber = int.Parse(text.text);
+            StaticCatastrophyDataBroker.IsGameStartMode = false;
             LevelManager.LoadLevel(levelNumber);
         }
 

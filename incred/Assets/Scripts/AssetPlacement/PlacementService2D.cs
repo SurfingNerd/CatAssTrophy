@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Levels;
 
 namespace AssetPlacement
 {
@@ -38,6 +39,8 @@ namespace AssetPlacement
         public float ZoomSpeed;
         public GameObject Wall;
 
+        public Vector2 CatStartForceVector;
+
         [HideInInspector]
         // Key = Prefab, Value = Instance
         public List<System.Collections.Generic.KeyValuePair<LevelAsset, GameObject>> PlacedAssets
@@ -52,7 +55,12 @@ namespace AssetPlacement
             AvailableAssets = LevelAssetService.Assets;
             m_originalCameraSize = Camera.orthographicSize;
             Build();
-            ApplyPositions(StaticLocationPlacementStorage.GetLocationPlacementInfo());
+            ApplyPositions(StaticCatastrophyDataBroker.GetLocationPlacementInfo());
+
+            if (StaticCatastrophyDataBroker.IsGameStartMode)
+            {
+                StartGame();
+            }
         }
 
         // Update is called once per frame
@@ -364,6 +372,43 @@ namespace AssetPlacement
             {
                 Destroy(obj);
             }
+
+            StartStartableGameObjects();
+            ApplyCatForce();
+        }
+
+        public void ApplyCatForce()
+        {
+            // Save game data
+            GameObject cat = GameObject.Find("coolCat");
+            Rigidbody2D catBody = cat.GetComponent<Rigidbody2D>();
+            catBody.isKinematic = false;
+            catBody.AddForce(CatStartForceVector);
+        }
+
+        private void StartStartableGameObjects()
+        {
+            //Debug.Log("called StartStartableGameObjects");
+            UnityEngine.Object[] objs = GameObject.FindObjectsOfType(typeof(GameObject));
+
+            HashSet<GameObject> handledGameObjects = new HashSet<GameObject>();
+            foreach (var obj in objs)
+            {
+                if (obj is GameObject)
+                {
+                    GameObject go = obj as GameObject;
+                    if (!handledGameObjects.Contains(go))
+                    {
+                        handledGameObjects.Add(go);
+                        var startableObjects = go.GetComponents<IStartableGameObject>();
+                        foreach (IStartableGameObject startableObject in startableObjects)
+                        {
+                            startableObject.StartGame();
+                        }
+                    }
+                }
+            }
+
         }
 
         private void UpdateCountText(LevelAsset asset)

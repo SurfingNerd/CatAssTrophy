@@ -15,9 +15,17 @@ namespace Gui
 
         public void RestartLevel()
         {
+            StaticCatastrophyDataBroker.IsGameStartMode = false;
+
+            RunLevel();
             // Save game data
 
             // Close game
+            
+        }
+
+        private void RunLevel()
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
@@ -57,34 +65,15 @@ namespace Gui
 
         public void startLevel()
         {
-
-            if (!started)
-            {
-                StorePositions();
-                RestartLevel();
-
-                // Save game data
-                GameObject cat = GameObject.Find("coolCat");
-                startVector = cat.transform.position;
-                cat.GetComponent<Rigidbody2D>().isKinematic = false;
-                started = true;
-                //ApplyPositions(savedPositions);
-                StartPlacementService();
-                StartStartableGameObjects();
-            }
-            else
-            {
-
-                GameObject cat = GameObject.Find("coolCat");
-                cat.transform.position = startVector;
-
-            }
+            StorePositions();
+            StaticCatastrophyDataBroker.IsGameStartMode = true;
+            RunLevel();
         }
 
         private void StorePositions()
         {
             AssetPlacement.PlacementService2D service = FindObjectOfType<AssetPlacement.PlacementService2D>();
-            AssetPlacement.StaticLocationPlacementStorage.StoreLocationPlacementInfo(service.GetPositionInfos());
+            AssetPlacement.StaticCatastrophyDataBroker.StoreLocationPlacementInfo(service.GetPositionInfos());
         }
 
         //private void ApplyPositions(List<PrefabPositionInfo> positions)
