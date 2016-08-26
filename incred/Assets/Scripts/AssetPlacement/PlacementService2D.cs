@@ -321,6 +321,11 @@ namespace AssetPlacement
             m_isCurrentlyPlayingGame = true; //<< deactivates drag and drop.
             //m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
             List<GameObject> objectsToDestroy = new List<GameObject>();
+
+            //we need to store the current positions now,
+            //because later, it's to late (infos get destroyed)
+            StaticCatastrophyDataBroker.StoreLocationPlacementInfo(GetPositionInfos());
+
             //TODO: replace the preview objects with real objects that have physics reanabled.
             foreach (var kvp in m_inScenePreviewObjects)
             {

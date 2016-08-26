@@ -16,7 +16,6 @@ namespace Gui
         public void RestartLevel()
         {
             StaticCatastrophyDataBroker.IsGameStartMode = false;
-
             RunLevel();
             // Save game data
 
@@ -65,7 +64,13 @@ namespace Gui
 
         public void startLevel()
         {
-            StorePositions();
+            if (!StaticCatastrophyDataBroker.IsGameStartMode)
+            {
+                //if we are allready in startmode, than there is allready the most up to date information stored.
+                //we would override it with wrong information.
+                StorePositions();
+            }
+                
             StaticCatastrophyDataBroker.IsGameStartMode = true;
             RunLevel();
         }

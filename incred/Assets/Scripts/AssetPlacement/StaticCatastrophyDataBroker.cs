@@ -29,8 +29,5 @@ namespace AssetPlacement
                 return new List<PrefabPositionInfo>();
             }
         }
-
-
-
     }
 }
