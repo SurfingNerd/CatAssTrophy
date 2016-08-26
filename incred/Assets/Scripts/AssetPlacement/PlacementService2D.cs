@@ -197,48 +197,19 @@ namespace AssetPlacement
             //If object is dropped out of scene, it gets brought back to asset selection.
             if (m_currentDraggingObject != null)
             {
-                RectTransform rectTransform = PlacementPanel.transform as RectTransform;
-                float biggestX = float.MinValue;
-                bool contains = false;
-                if (rectTransform != null)
+               
+                Renderer renderer = null; 
+
+                for (int i = 0; i < PlacementPanel.transform.childCount; i++)
                 {
-                    Vector3[] localcorners = new Vector3[4];
-                    rectTransform.GetLocalCorners(localcorners);
-
-                    for (int i = 0; i <= 4; i++)
+                    Transform transform = PlacementPanel.transform.GetChild(i);
+                    if (transform.gameObject.name == "background")
                     {
-                        Vector3 globalCorner = rectTransform.TransformPoint(localcorners[0]);
-                        if (globalCorner.x > biggestX)
-                        {
-                            biggestX = globalCorner.x;
-                        }
+                        renderer = transform.gameObject.GetComponent<Renderer>();
                     }
-                    Rect rect = new Rect(biggestX, -1000, 1000, 2000);
-                    contains = rect.Contains(clickPoint2D);
                 }
-                else
-                {
-                    Renderer renderer = null; 
 
-                    for (int i = 0; i < PlacementPanel.transform.childCount; i++)
-                    {
-                        Transform transform = PlacementPanel.transform.GetChild(i);
-                        if (transform.gameObject.name == "background")
-                        {
-                            renderer = transform.gameObject.GetComponent<Renderer>();
-                        }
-                    }
-
-                    contains = renderer.bounds.Contains(clickPoint2D);
-
-                    //PlacementPanel.
-                }
-                //todo: What if only a normal transform ? 
-                //get values from renderer ?
-                
-                //be sure to even track positions right outside the panel.
-                
-
+                bool contains = renderer.bounds.Contains(clickPoint2D);
                 
                 //Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
                 if (contains)
