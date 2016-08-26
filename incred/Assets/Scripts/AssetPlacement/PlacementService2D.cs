@@ -197,48 +197,12 @@ namespace AssetPlacement
             //If object is dropped out of scene, it gets brought back to asset selection.
             if (m_currentDraggingObject != null)
             {
-                RectTransform rectTransform = PlacementPanel.transform as RectTransform;
-                float biggestX = float.MinValue;
-                bool contains = false;
-                if (rectTransform != null)
-                {
-                    Vector3[] localcorners = new Vector3[4];
-                    rectTransform.GetLocalCorners(localcorners);
+               
+                Renderer renderer = GetDragCanvasRenderer(); 
 
-                    for (int i = 0; i <= 4; i++)
-                    {
-                        Vector3 globalCorner = rectTransform.TransformPoint(localcorners[0]);
-                        if (globalCorner.x > biggestX)
-                        {
-                            biggestX = globalCorner.x;
-                        }
-                    }
-                    Rect rect = new Rect(biggestX, -1000, 1000, 2000);
-                    contains = rect.Contains(clickPoint2D);
-                }
-                else
-                {
-                    Renderer renderer = null; 
 
-                    for (int i = 0; i < PlacementPanel.transform.childCount; i++)
-                    {
-                        Transform transform = PlacementPanel.transform.GetChild(i);
-                        if (transform.gameObject.name == "background")
-                        {
-                            renderer = transform.gameObject.GetComponent<Renderer>();
-                        }
-                    }
 
-                    contains = renderer.bounds.Contains(clickPoint2D);
-
-                    //PlacementPanel.
-                }
-                //todo: What if only a normal transform ? 
-                //get values from renderer ?
-                
-                //be sure to even track positions right outside the panel.
-                
-
+                bool contains = renderer.bounds.Contains(clickPoint2D);
                 
                 //Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
                 if (contains)
@@ -252,6 +216,19 @@ namespace AssetPlacement
             m_currentDraggingObject = null;
             m_currentDraggingAsset = null;
 
+        }
+
+        private Renderer GetDragCanvasRenderer()
+        {
+            for (int i = 0; i < PlacementPanel.transform.childCount; i++)
+            {
+                Transform transform = PlacementPanel.transform.GetChild(i);
+                if (transform.gameObject.name == "background")
+                {
+                    return transform.gameObject.GetComponent<Renderer>();
+                }
+            }
+            throw new InvalidOperationException("On the placement panel der must be a object called 'background' that contains a renderer. (Texture)");
         }
 
         private void UpdateDragPosition(Vector2 clickPoint2D)
@@ -313,8 +290,13 @@ namespace AssetPlacement
 
             if (m_currentDraggingAsset == null)
             {
-                m_isDraggingCamera = true;
-                m_lastCameraClickPosition = clickPoint2D;
+                //dont start drag camera on the dragging canvas
+                Renderer dragBackgroundRenderer = GetDragCanvasRenderer();
+                if (!dragBackgroundRenderer.bounds.Contains(clickPoint2D))
+                {
+                    m_isDraggingCamera = true;
+                    m_lastCameraClickPosition = clickPoint2D;
+                }
             }
         }
 
@@ -350,6 +332,11 @@ namespace AssetPlacement
             m_isCurrentlyPlayingGame = true; //<< deactivates drag and drop.
             //m_positionsAtLastGameStart = new Dictionary<LevelAsset, List<Vector3>>();
             List<GameObject> objectsToDestroy = new List<GameObject>();
+
+            //we need to store the current positions now,
+            //because later, it's to late (infos get destroyed)
+            StaticCatastrophyDataBroker.StoreLocationPlacementInfo(GetPositionInfos());
+
             //TODO: replace the preview objects with real objects that have physics reanabled.
             foreach (var kvp in m_inScenePreviewObjects)
             {
@@ -429,7 +416,7 @@ namespace AssetPlacement
                 //Place the text relative to the asset.
                 GameObject assetSelector = m_assetSelectors[asset];
                 
-                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 1, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
+                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 2, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
                 
 
                 TextMesh text = textHolder.AddComponent<TextMesh>();

@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012313681944}
   m_Layer: 0
-  m_Name: bird_in_cage better one
+  m_Name: BirdCage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
