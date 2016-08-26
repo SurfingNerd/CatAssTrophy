@@ -416,7 +416,7 @@ namespace AssetPlacement
                 //Place the text relative to the asset.
                 GameObject assetSelector = m_assetSelectors[asset];
                 
-                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 1, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
+                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 2, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
                 
 
                 TextMesh text = textHolder.AddComponent<TextMesh>();

@@ -11,19 +11,23 @@ EditorBuildSettings:
     path: Assets/Scenes/0-startScreen2.unity
   - enabled: 1
     path: Assets/Scenes/0-startScreen.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/old/1-levelPicker.unity
-  - enabled: 1
-    path: Assets/Scenes/2-level.unity
-  - enabled: 1
-    path: Assets/Scenes/3-level.unity
-  - enabled: 1
-    path: Assets/Scenes/4-level.unity
-  - enabled: 1
-    path: Assets/Scenes/5-level.unity
-  - enabled: 1
-    path: Assets/Scenes/6-level.unity
-  - enabled: 1
-    path: Assets/Scenes/7-level.unity
+  - enabled: 0
+    path: Assets/Scenes/old/2-level-old.unity
+  - enabled: 0
+    path: Assets/Scenes/old/3-level-old.unity
+  - enabled: 0
+    path: Assets/Scenes/old/4-level-old.unity
+  - enabled: 0
+    path: Assets/Scenes/old/5-level-old.unity
+  - enabled: 0
+    path: Assets/Scenes/old/6-level-old.unity
+  - enabled: 0
+    path: Assets/Scenes/old/7-level-old.unity
   - enabled: 1
     path: Assets/Scenes/LevelPicker.unity
+  - enabled: 1
+    path: Assets/Scenes/1-level.unity
+  - enabled: 1
+    path: Assets/Scenes/2-level.unity
