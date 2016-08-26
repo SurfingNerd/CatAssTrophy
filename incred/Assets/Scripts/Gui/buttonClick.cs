@@ -18,6 +18,11 @@ namespace Gui
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+        public void GoToLevelPicker()
+        {
+            LevelManager.LoadLevelPicker();
+        }
+
 
         private void StartPlacementService()
         {

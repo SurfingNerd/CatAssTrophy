@@ -21,7 +21,7 @@ namespace Levels
 
         public static void LoadLevelPicker()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("1-levelPicker");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("LevelPicker");
         }
 
         public static void LoadLevel(int levelNumber)
