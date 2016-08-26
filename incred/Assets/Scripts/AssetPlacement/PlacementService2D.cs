@@ -388,11 +388,11 @@ namespace AssetPlacement
                 //Place the text relative to the asset.
                 GameObject assetSelector = m_assetSelectors[asset];
                 
-                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 0.1f, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
+                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 1, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
                 
 
                 TextMesh text = textHolder.AddComponent<TextMesh>();
-                text.offsetZ = -5; //???
+                text.offsetZ = -1.5f; //???
                 text.fontSize = 128;
                 text.characterSize = 0.1f;
                 
