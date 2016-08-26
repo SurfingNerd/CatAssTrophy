@@ -198,16 +198,9 @@ namespace AssetPlacement
             if (m_currentDraggingObject != null)
             {
                
-                Renderer renderer = null; 
+                Renderer renderer = GetDragCanvasRenderer(); 
 
-                for (int i = 0; i < PlacementPanel.transform.childCount; i++)
-                {
-                    Transform transform = PlacementPanel.transform.GetChild(i);
-                    if (transform.gameObject.name == "background")
-                    {
-                        renderer = transform.gameObject.GetComponent<Renderer>();
-                    }
-                }
+
 
                 bool contains = renderer.bounds.Contains(clickPoint2D);
                 
@@ -223,6 +216,19 @@ namespace AssetPlacement
             m_currentDraggingObject = null;
             m_currentDraggingAsset = null;
 
+        }
+
+        private Renderer GetDragCanvasRenderer()
+        {
+            for (int i = 0; i < PlacementPanel.transform.childCount; i++)
+            {
+                Transform transform = PlacementPanel.transform.GetChild(i);
+                if (transform.gameObject.name == "background")
+                {
+                    return transform.gameObject.GetComponent<Renderer>();
+                }
+            }
+            throw new InvalidOperationException("On the placement panel der must be a object called 'background' that contains a renderer. (Texture)");
         }
 
         private void UpdateDragPosition(Vector2 clickPoint2D)
@@ -284,8 +290,13 @@ namespace AssetPlacement
 
             if (m_currentDraggingAsset == null)
             {
-                m_isDraggingCamera = true;
-                m_lastCameraClickPosition = clickPoint2D;
+                //dont start drag camera on the dragging canvas
+                Renderer dragBackgroundRenderer = GetDragCanvasRenderer();
+                if (!dragBackgroundRenderer.bounds.Contains(clickPoint2D))
+                {
+                    m_isDraggingCamera = true;
+                    m_lastCameraClickPosition = clickPoint2D;
+                }
             }
         }
 

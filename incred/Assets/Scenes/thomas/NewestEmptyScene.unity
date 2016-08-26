@@ -242,6 +242,16 @@ Prefab:
       propertyPath: m_LocalPosition.x
       value: 14.51
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011634312112, guid: 78d6b42d5e977374986bac360a8306da,
+        type: 2}
+      propertyPath: CatStartForceVector.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011634312112, guid: 78d6b42d5e977374986bac360a8306da,
+        type: 2}
+      propertyPath: CatStartForceVector.y
+      value: 150
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 78d6b42d5e977374986bac360a8306da, type: 2}
   m_IsPrefabParent: 0
