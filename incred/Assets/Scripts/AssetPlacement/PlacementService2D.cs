@@ -21,6 +21,7 @@ namespace AssetPlacement
         private GameObject m_currentDraggingObject;
         private LevelAsset m_currentDraggingAsset;
         private bool m_isDraggingCamera;
+        private float m_originalCameraSize; 
 
         // Click on the plane in world space for camera movement interaction.
         private Vector2 m_lastCameraClickPosition;
@@ -49,6 +50,7 @@ namespace AssetPlacement
         void Start()
         {
             AvailableAssets = LevelAssetService.Assets;
+            m_originalCameraSize = Camera.orthographicSize;
             Build();
         }
 
@@ -128,8 +130,9 @@ namespace AssetPlacement
         {
             if (Input.mouseScrollDelta.y != 0)
             {
-                float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * -ZoomSpeed);
+                float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * - ZoomSpeed);
 
+                float oldOrthographicSize = Camera.orthographicSize;
                 if (cameraSize > MaxCameraSize)
                 {
                     Camera.orthographicSize = MaxCameraSize;
@@ -143,6 +146,10 @@ namespace AssetPlacement
                     Camera.orthographicSize = cameraSize;
                 }
 
+
+                //Update scaling of panel to new orthographic size
+                //float = PlacementPanel.transform.localScale.x
+
                 UpdateDragPanelToCamera();
             }
         }
@@ -151,12 +158,16 @@ namespace AssetPlacement
         {
             Vector3 worldPointInTheMiddle = Camera.ScreenToWorldPoint(new Vector3(Camera.pixelWidth * 0.95f, Camera.pixelHeight / 2));
             PlacementPanel.transform.position = new Vector3(worldPointInTheMiddle.x, worldPointInTheMiddle.y, 0);
+
+            float panelScaleFactor = Camera.orthographicSize / m_originalCameraSize;
+            PlacementPanel.transform.localScale = new Vector3(panelScaleFactor, panelScaleFactor, panelScaleFactor);
+
             //Debug.Log(worldPointInTheMiddle);
 
             //Debug.Log(Camera.rect);
             //Debug.Log(Camera.pixelWidth);
             //Debug.Log(Camera.)
-            
+
             //PlacementPanel.transform.transform.localScale = new Vector3(
             //    Camera.rect.width, Camera.rect.height);
             //Camera.rect
@@ -165,6 +176,7 @@ namespace AssetPlacement
         private void ApplyCameraMovement(Vector2 clickPoint2D)
         {
             Camera.transform.position = Camera.transform.position + ((Vector3)m_lastCameraClickPosition - (Vector3)clickPoint2D);
+            UpdateDragPanelToCamera();
         }
 
         private void EndDrag(Vector2 clickPoint2D)
@@ -197,7 +209,17 @@ namespace AssetPlacement
                 }
                 else
                 {
-                    Renderer renderer = PlacementPanel.GetComponent<Renderer>();
+                    Renderer renderer = null; 
+
+                    for (int i = 0; i < PlacementPanel.transform.childCount; i++)
+                    {
+                        Transform transform = PlacementPanel.transform.GetChild(i);
+                        if (transform.gameObject.name == "background")
+                        {
+                            renderer = transform.gameObject.GetComponent<Renderer>();
+                        }
+                    }
+
                     contains = renderer.bounds.Contains(clickPoint2D);
 
                     //PlacementPanel.
@@ -353,23 +375,32 @@ namespace AssetPlacement
             if (m_textHolders.ContainsKey(asset))
             {
                 TextMesh text = m_textElements[asset];
-                text.text = "X " + asset.Count;
+                text.text = asset.Count.ToString();
+                
             }
             else
             {
                 GameObject textHolder = new GameObject("textHolder");
 
-                textHolder.transform.SetParent(m_assetSelectors[asset].transform);  //slot.transform;
-                textHolder.transform.localPosition = new Vector3(-24, 0, 0);
+                textHolder.transform.SetParent(PlacementPanel.transform);
+                //textHolder.transform.SetParent(m_assetSelectors[asset].transform);  //slot.transform;
+
+                //Place the text relative to the asset.
+                GameObject assetSelector = m_assetSelectors[asset];
+                
+                textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 0.1f, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
+                
 
                 TextMesh text = textHolder.AddComponent<TextMesh>();
                 text.offsetZ = -5; //???
-                text.fontSize = 72;
+                text.fontSize = 128;
                 text.characterSize = 0.1f;
                 
+
+
                 text.alignment = TextAlignment.Center;
-                text.anchor = TextAnchor.MiddleLeft;
-                text.text = "X " + asset.Count;
+                text.anchor = TextAnchor.MiddleCenter;
+                text.text = asset.Count.ToString();
                 text.color = AssetCountTextColor;
                 m_textHolders.Add(asset, textHolder);
                 m_textElements.Add(asset, text);
@@ -382,7 +413,7 @@ namespace AssetPlacement
 
             //Renderer renderer = PlacementPanel.GetComponent<Renderer>();
             // renderer.bounds.size.y
-            float availablesize = 0.8f;
+            float availablesize = 8f;
             
             float currentY = availablesize / 2;
             float stepY = availablesize / 4f;
@@ -401,7 +432,6 @@ namespace AssetPlacement
                         currentY -= stepY;
 
                         MakePreviewObject(assetSelectorObject);
-                        
                         MakeUILayerObject(assetSelectorObject);
                         m_assetSelectors.Add(asset, assetSelectorObject);
 
