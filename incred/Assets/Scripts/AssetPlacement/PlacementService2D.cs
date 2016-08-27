@@ -21,7 +21,7 @@ namespace AssetPlacement
         private GameObject m_currentDraggingObject;
         private LevelAsset m_currentDraggingAsset;
         private bool m_isDraggingCamera;
-        private float m_originalCameraSize; 
+        private float m_originalCameraSize;
 
         // Click on the plane in world space for camera movement interaction.
         private Vector2 m_lastCameraClickPosition;
@@ -105,7 +105,7 @@ namespace AssetPlacement
             bool isButtonClicked = Input.GetMouseButtonDown(0);
 
             ApplyCameraZoom();
-            
+
             if (m_isDraggingCamera)
             {
                 if (isButtonHold)
@@ -117,12 +117,12 @@ namespace AssetPlacement
                     m_isDraggingCamera = false;
                 }
             }
-            else if(m_currentDraggingObject == null)
+            else if (m_currentDraggingObject == null)
             {
                 if (isButtonClicked)
                 {
                     StartDrag(clickPoint2D);
-                }       
+                }
             }
             else //currently dragging
             {
@@ -141,7 +141,7 @@ namespace AssetPlacement
         {
             if (Input.mouseScrollDelta.y != 0)
             {
-                float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * - ZoomSpeed);
+                float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * -ZoomSpeed);
 
                 if (cameraSize > MaxCameraSize)
                 {
@@ -198,9 +198,9 @@ namespace AssetPlacement
             //If object is dropped out of scene, it gets brought back to asset selection.
             if (m_currentDraggingObject != null)
             {
-                Renderer renderer = GetDragCanvasRenderer(); 
+                Renderer renderer = GetDragCanvasRenderer();
                 bool contains = renderer.bounds.Contains(clickPoint2D);
-                
+
                 if (contains)
                 {
                     m_currentDraggingAsset.Count++;
@@ -303,7 +303,7 @@ namespace AssetPlacement
         {
             //if (m_inScenePreviewObjects.ContainsKey(asset)
             List<GameObject> gameObjects = null;
-            if (!m_inScenePreviewObjects.TryGetValue(asset, out gameObjects ))
+            if (!m_inScenePreviewObjects.TryGetValue(asset, out gameObjects))
             {
                 gameObjects = new List<GameObject>();
                 m_inScenePreviewObjects.Add(asset, gameObjects);
@@ -408,7 +408,7 @@ namespace AssetPlacement
             {
                 TextMesh text = m_textElements[asset];
                 text.text = asset.Count.ToString();
-                
+
             }
             else
             {
@@ -419,15 +419,15 @@ namespace AssetPlacement
 
                 //Place the text relative to the asset.
                 GameObject assetSelector = m_assetSelectors[asset];
-                
+
                 textHolder.transform.localPosition = new Vector3(assetSelector.transform.localPosition.x - 2, assetSelector.transform.localPosition.y, assetSelector.transform.localPosition.z);
-                
+
 
                 TextMesh text = textHolder.AddComponent<TextMesh>();
                 text.offsetZ = -1.5f; //???
                 text.fontSize = 128;
                 text.characterSize = 0.1f;
-                
+
 
 
                 text.alignment = TextAlignment.Center;
@@ -446,7 +446,7 @@ namespace AssetPlacement
             //Renderer renderer = PlacementPanel.GetComponent<Renderer>();
             // renderer.bounds.size.y
             float availablesize = 8f;
-            
+
             float currentY = availablesize / 2;
             float stepY = availablesize / 4f;
 
@@ -459,7 +459,7 @@ namespace AssetPlacement
                     if (asset.Prefab != null && asset.Count > 0)
                     {
                         GameObject assetSelectorObject = Instantiate(asset.Prefab);
-                        
+
                         assetSelectorObject.transform.SetParent(PlacementPanel.transform);
                         assetSelectorObject.transform.localPosition = new Vector3(0, currentY, 0);
                         currentY -= stepY;
@@ -481,9 +481,9 @@ namespace AssetPlacement
         private void MakeUILayerObject(GameObject previewObject)
         {
             var renderers = GetAll<SpriteRenderer>(previewObject);
-            
+
             //SpriteRenderer thisRenderer = GetComponent<SpriteRenderer>();
-            foreach (var spriteRenderer  in renderers)
+            foreach (var spriteRenderer in renderers)
             {
                 spriteRenderer.sortingLayerName = "UI";
                 spriteRenderer.sortingOrder = 1;
@@ -502,9 +502,25 @@ namespace AssetPlacement
 
         private void MakePreviewObject(GameObject currentPreviewObject)
         {
-            currentPreviewObject.AddComponent<PreviewCollisionMemory>();
+            PreviewCollisionMemory collisionMemory = currentPreviewObject.AddComponent<PreviewCollisionMemory>();
+            HashSet<GameObject> hierachialObjects = new HashSet<GameObject>();
+            hierachialObjects.Add(currentPreviewObject);
+            collisionMemory.ObjectsToIgnore = hierachialObjects;
+            AddPreviewCollisionMemoryRecursive(currentPreviewObject, hierachialObjects);
             DeactivateAllBehaviors(currentPreviewObject);
-            DeactivateAllRigidBodies(currentPreviewObject);          
+            DeactivateAllRigidBodies(currentPreviewObject);
+        }
+
+        private void AddPreviewCollisionMemoryRecursive(GameObject currentPreviewObject, HashSet<GameObject> hierachialObjects)
+        {
+            for (int i = 0; i < currentPreviewObject.transform.childCount; i++)
+            {
+                Transform childTransform = currentPreviewObject.transform.GetChild(i);
+                hierachialObjects.Add(childTransform.gameObject);
+                PreviewCollisionMemory collisionMemory = childTransform.gameObject.AddComponent<PreviewCollisionMemory>();
+                collisionMemory.ObjectsToIgnore = hierachialObjects;
+                AddPreviewCollisionMemoryRecursive(childTransform.gameObject, hierachialObjects);
+            }
         }
 
         private void DeactivateAllBehaviors(GameObject currentPreviewObject)
@@ -556,20 +572,11 @@ namespace AssetPlacement
             }
         }
 
-        private IEnumerable<T> GetAll<T>(GameObject obj)
+        public static T[] GetAll<T>(GameObject obj)
         {
-            //HashSet<T> elements = new HashSet<T>();
             List<Component> components = new List<Component>();
             obj.GetComponents(typeof(T), components);
             components.AddRange(obj.GetComponentsInChildren(typeof(T)));
-
-            //foreach (T item in components.Cast<T>())
-            //{
-            //    if (!elements.Contains(item))
-            //    {
-            //        elements.Add();
-            //    }
-            //}
 
             return components.Cast<T>().Distinct().ToArray();
         }
