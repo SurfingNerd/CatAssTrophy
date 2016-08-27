@@ -41,16 +41,13 @@ namespace Physics
 
                 //Debug.Log("OldPOS: " + transform.position + " NewPOS" + breakPot.transform.position);
                 StartCoroutine(LoadAfterTime(5));
-
-
-
-
             }
         }
 
         public IEnumerator LoadAfterTime(int seconds)
         {
             yield return new WaitForSeconds(seconds);
+            AssetPlacement.StaticCatastrophyDataBroker.IsGameStartMode = false;
             LevelManager.LoadNextLevel();
         }
     }
