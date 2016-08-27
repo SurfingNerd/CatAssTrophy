@@ -243,12 +243,13 @@ namespace AssetPlacement
             //check if starting draging
             foreach (var item in m_assetSelectors)
             {
-                Renderer renderer = item.Value.GetComponent<Renderer>();
-
-                if (renderer.bounds.Contains(clickPoint2D))
+                foreach (Renderer renderer in GetAll<Renderer>(item.Value))
                 {
-                    m_currentDraggingAsset = item.Key;
-                    m_isDraggingCamera = false;
+                    if (renderer.bounds.Contains(clickPoint2D))
+                    {
+                        m_currentDraggingAsset = item.Key;
+                        m_isDraggingCamera = false;
+                    }
                 }
             }
 
@@ -267,14 +268,16 @@ namespace AssetPlacement
                 {
                     foreach (GameObject obj in kvp.Value)
                     {
-                        Renderer renderer = obj.GetComponent<Renderer>();
-                        if (renderer.bounds.Contains(clickPoint2D))
+                        foreach (Renderer renderer in GetAll<Renderer>(obj))
                         {
-                            m_currentDraggingAsset = kvp.Key;
-                            m_currentDraggingObject = obj;
-                            m_currentDraggingObject.transform.position = clickPoint2D;
-                            m_isDraggingCamera = false;
-                            break;
+                            if (renderer.bounds.Contains(clickPoint2D))
+                            {
+                                m_currentDraggingAsset = kvp.Key;
+                                m_currentDraggingObject = obj;
+                                m_currentDraggingObject.transform.position = clickPoint2D;
+                                m_isDraggingCamera = false;
+                                break;
+                            }
                         }
                     }
                     if (m_currentDraggingObject != null)
@@ -476,8 +479,8 @@ namespace AssetPlacement
         }
 
         private void MakeUILayerObject(GameObject previewObject)
-        {      
-            var renderers = previewObject.GetComponents<SpriteRenderer>();
+        {
+            var renderers = GetAll<SpriteRenderer>(previewObject);
             
             //SpriteRenderer thisRenderer = GetComponent<SpriteRenderer>();
             foreach (var spriteRenderer  in renderers)
