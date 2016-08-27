@@ -78,25 +78,28 @@ namespace Levels.LevelPicker
             int iconIndex = 0;
             for (int levelNumber = (levelRange * 10) + 1; levelNumber <= levelRange * 10 + 10; levelNumber++)
             {
-                GameObject levelIcon = null;
-
-                if (m_isFirstInitialisationRun)
+                if (levelNumber <= LevelManager.MaxLevels)
                 {
-                    levelIcon = Instantiate(LevelIconPrefab);
-                    levelIcon.transform.SetParent(gameObject.transform);
-                    levelIcon.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
-                    UnityEngine.UI.Button button = levelIcon.GetComponent<UnityEngine.UI.Button>();
-                    button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => LoadLevel(levelIcon)));
-                }
-                else
-                {
-                    levelIcon = gameObject.transform.GetChild(iconIndex).gameObject;
-                }
+                    GameObject levelIcon = null;
 
-                Transform childTransform = levelIcon.transform.GetChild(0);
-                UnityEngine.UI.Text text = childTransform.GetComponent<UnityEngine.UI.Text>();
-                text.text = levelNumber.ToString();
-                iconIndex++;
+                    if (m_isFirstInitialisationRun)
+                    {
+                        levelIcon = Instantiate(LevelIconPrefab);
+                        levelIcon.transform.SetParent(gameObject.transform);
+                        levelIcon.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+                        UnityEngine.UI.Button button = levelIcon.GetComponent<UnityEngine.UI.Button>();
+                        button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => LoadLevel(levelIcon)));
+                    }
+                    else
+                    {
+                        levelIcon = gameObject.transform.GetChild(iconIndex).gameObject;
+                    }
+
+                    Transform childTransform = levelIcon.transform.GetChild(0);
+                    UnityEngine.UI.Text text = childTransform.GetComponent<UnityEngine.UI.Text>();
+                    text.text = levelNumber.ToString();
+                    iconIndex++;
+                }
             }
 
             m_isFirstInitialisationRun = false;

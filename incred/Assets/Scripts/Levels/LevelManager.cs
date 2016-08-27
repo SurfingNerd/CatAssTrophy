@@ -3,8 +3,6 @@ using System.Collections;
 
 namespace Levels
 {
-
-
     public static class LevelManager
     {
         /// <summary>
@@ -12,7 +10,7 @@ namespace Levels
         /// </summary>
         public static int CurrentLevel;
 
-        public static readonly int MaxLevels = 100;
+        public static readonly int MaxLevels = 5;
 
         public static void LoadStartScreen()
         {
@@ -33,7 +31,16 @@ namespace Levels
 
         public static void LoadNextLevel()
         {
-            LoadLevel(CurrentLevel + 1);
+            int level = CurrentLevel + 1;
+            if (level <= MaxLevels)
+            {
+                LoadLevel(level);
+            }
+            else
+            {
+                LoadLevelPicker();
+            }
+
         }
     }
 
