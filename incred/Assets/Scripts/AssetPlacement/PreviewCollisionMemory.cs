@@ -46,7 +46,10 @@ public class PreviewCollisionMemory : MonoBehaviour {
             //Debug.Log(otherCollider);
             m_currentColliders.Add(otherCollider);
             Debug.Log(gameObject.name + " - " + otherCollider.gameObject.name + " Ignored: " + ObjectsToIgnore.Count);
-            MarkAsUnplaceable();
+            if (IsColliding)
+            {
+                MarkAsUnplaceable();
+            }
         }
     }
 

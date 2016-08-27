@@ -588,8 +588,13 @@ namespace AssetPlacement
             foreach (var kvp in m_inScenePreviewObjects)
             {
                 foreach (var obj in kvp.Value)
-                { 
-                    result.Add(new PrefabPositionInfo() { Prefab = kvp.Key.Prefab, Position = obj.transform.position});
+                {
+                    PreviewCollisionMemory collisionMemory = obj.GetComponent<PreviewCollisionMemory>();
+                    //only add objects that havent been setup as colliding object.
+                    if (!collisionMemory.IsColliding)
+                    {
+                        result.Add(new PrefabPositionInfo() { Prefab = kvp.Key.Prefab, Position = obj.transform.position });
+                    }
                 }
             }
 
