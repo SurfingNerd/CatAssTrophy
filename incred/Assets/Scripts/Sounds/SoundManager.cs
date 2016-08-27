@@ -8,6 +8,7 @@ namespace Sounds
     public class SoundManager : MonoBehaviour
     {
         public static SoundManager Instance;
+        private static bool m_bIsCurrentlyInStartupProcess;
         public AudioSource AudioSource;
         private bool m_bIsCurrentlyPlaying;
         
@@ -16,15 +17,20 @@ namespace Sounds
         void Start()
         {
             Instance = this;
+            m_bIsCurrentlyInStartupProcess = false;
         }
 
         public static void LoadAndEnsureGameMusic(MonoBehaviour owningBehavior)
         {
-            //for some very strange reason, this triggers more than once...
-            //Instance is static and IS SET MORE THAN once.
-            if (Instance == null)
+            if (!m_bIsCurrentlyInStartupProcess)
             {
-                owningBehavior.StartCoroutine(LoadEndEnsureGameMusicRoutine());
+                m_bIsCurrentlyInStartupProcess = true;
+                //for some very strange reason, this triggers more than once...
+                //Instance is static and IS SET MORE THAN once.
+                if (Instance == null)
+                {
+                    owningBehavior.StartCoroutine(LoadEndEnsureGameMusicRoutine());
+                }
             }
         }
 
