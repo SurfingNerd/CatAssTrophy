@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using Levels;
+using Sounds;
 
 namespace AssetPlacement
 {
@@ -50,6 +51,7 @@ namespace AssetPlacement
         // Use this for initialization
         void Start()
         {
+            SoundManager.LoadAndEnsureGameMusic(this);
             AvailableAssets = LevelAssetService.Assets;
             m_originalCameraSize = Camera.orthographicSize;
             Build();
@@ -141,7 +143,6 @@ namespace AssetPlacement
             {
                 float cameraSize = Camera.orthographicSize + (Input.mouseScrollDelta.y * Camera.orthographicSize * - ZoomSpeed);
 
-                float oldOrthographicSize = Camera.orthographicSize;
                 if (cameraSize > MaxCameraSize)
                 {
                     Camera.orthographicSize = MaxCameraSize;

@@ -10,9 +10,6 @@ namespace Gui
 {
     public class buttonClick : MonoBehaviour
     {
-        bool started = false;
-        Vector3 startVector;
-
         public void RestartLevel()
         {
             StaticCatastrophyDataBroker.IsGameStartMode = false;

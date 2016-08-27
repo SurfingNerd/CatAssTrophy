@@ -4,6 +4,7 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using AssetPlacement;
+using Sounds;
 
 namespace Levels.LevelPicker
 {
@@ -18,6 +19,11 @@ namespace Levels.LevelPicker
         // Use this for initialization
         void Start()
         {
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.StopGameMusic();
+            }
+            
             Build();
             AttachButtonHandlers();
         }
