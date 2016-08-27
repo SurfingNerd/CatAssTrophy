@@ -20,8 +20,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010018370116}
   - 212: {fileID: 212000013092867762}
-  - 50: {fileID: 50000012985861670}
-  - 60: {fileID: 60000011840906038}
   m_Layer: 0
   m_Name: cat-owner-wakedup
   m_TagString: Untagged
@@ -248,6 +246,7 @@ GameObject:
   - 60: {fileID: 60000013478566852}
   - 114: {fileID: 114000010279912270}
   - 82: {fileID: 82000011519176598}
+  - 50: {fileID: 50000010538984620}
   m_Layer: 0
   m_Name: OwnerWakingUp
   m_TagString: Untagged
@@ -315,8 +314,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013848954772}
   - 212: {fileID: 212000012490074886}
-  - 50: {fileID: 50000010015248428}
-  - 60: {fileID: 60000013006681788}
   m_Layer: 0
   m_Name: cat-owner-sleeping
   m_TagString: Untagged
@@ -621,23 +618,23 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
---- !u!50 &50000010015248428
+--- !u!50 &50000010538984620
 Rigidbody2D:
   serializedVersion: 2
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013723828932}
-  m_UseAutoMass: 1
-  m_Mass: 12.274746
+  m_GameObject: {fileID: 1000012217628492}
+  m_UseAutoMass: 0
+  m_Mass: 10000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
+  m_GravityScale: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!50 &50000012505865692
 Rigidbody2D:
   serializedVersion: 2
@@ -647,23 +644,6 @@ Rigidbody2D:
   m_GameObject: {fileID: 1000012415909754}
   m_UseAutoMass: 1
   m_Mass: 1.4655185
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!50 &50000012985861670
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010190591004}
-  m_UseAutoMass: 1
-  m_Mass: 120.21288
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -686,67 +666,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.03}
   serializedVersion: 2
   m_Radius: 6.27
---- !u!60 &60000011840906038
-PolygonCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010190591004}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: -1.91}
-  m_Points:
-    m_Paths:
-    - - {x: -5.358236, y: 0.70341337}
-      - {x: -7.953746, y: 0.030799747}
-      - {x: -8.29162, y: 3.6154356}
-      - {x: -9.630295, y: 3.5706315}
-      - {x: -9.70841, y: -3.99742}
-      - {x: 9.631329, y: -4.314731}
-      - {x: 9.74766, y: 1.0284299}
-      - {x: 8.512241, y: 1.012309}
-      - {x: 8.467295, y: -0.36599123}
-      - {x: 2.509978, y: 0.16010237}
-      - {x: 2.3008263, y: 2.3811543}
-      - {x: 2.8908975, y: 6.040475}
-      - {x: 3.3296647, y: 6.4907875}
-      - {x: 2.112437, y: 7.6777487}
-      - {x: 0.5974627, y: 8.151263}
-      - {x: -1.5248148, y: 6.7076645}
-      - {x: -1.1019144, y: 3.8989792}
-      - {x: -2.255562, y: 0.05179012}
---- !u!60 &60000013006681788
-PolygonCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013723828932}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  m_Points:
-    m_Paths:
-    - - {x: -6.2373047, y: 4.5816603}
-      - {x: -7.8209066, y: 2.7449331}
-      - {x: -8.29162, y: 3.6154356}
-      - {x: -9.630295, y: 3.5706315}
-      - {x: -9.70841, y: -3.99742}
-      - {x: 9.631329, y: -4.314731}
-      - {x: 9.74766, y: 1.0284299}
-      - {x: 8.512241, y: 1.012309}
-      - {x: 8.467295, y: 0.2296196}
-      - {x: 4.296816, y: 1.7844996}
-      - {x: 0.13496366, y: 2.4894466}
-      - {x: -1.9822979, y: 2.3585083}
-      - {x: -4.359152, y: 3.8376062}
-      - {x: -5.6167135, y: 3.930038}
-      - {x: -5.6849117, y: 4.5554066}
 --- !u!60 &60000013478566852
 PolygonCollider2D:
   m_ObjectHideFlags: 1

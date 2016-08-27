@@ -198,14 +198,9 @@ namespace AssetPlacement
             //If object is dropped out of scene, it gets brought back to asset selection.
             if (m_currentDraggingObject != null)
             {
-               
                 Renderer renderer = GetDragCanvasRenderer(); 
-
-
-
                 bool contains = renderer.bounds.Contains(clickPoint2D);
                 
-                //Debug.Log("Rect: " + rect + " | " + clickPoint2D + " | " + contains);
                 if (contains)
                 {
                     m_currentDraggingAsset.Count++;
@@ -261,7 +256,7 @@ namespace AssetPlacement
             {
                 if (m_currentDraggingAsset.Count > 0)
                 {
-                    m_currentDraggingObject = PlaceAsset(clickPoint2D, m_currentDraggingAsset);
+                    m_currentDraggingObject = PlacePreviewObject(clickPoint2D, m_currentDraggingAsset);
                     m_isDraggingCamera = false;
                 }
             }
@@ -341,14 +336,19 @@ namespace AssetPlacement
             //TODO: replace the preview objects with real objects that have physics reanabled.
             foreach (var kvp in m_inScenePreviewObjects)
             {
-                List<Vector3> positions = new List<Vector3>();
+                //List<Vector3> positions = new List<Vector3>();
                 //m_positionsAtLastGameStart.Add(kvp.Key, positions);
                 foreach (var previewObject in kvp.Value)
                 {
-                    GameObject go = (GameObject)Instantiate(kvp.Key.Prefab);
-                    go.transform.position = previewObject.transform.position;
-                    positions.Add(previewObject.transform.position);
                     objectsToDestroy.Add(previewObject);
+
+                    PreviewCollisionMemory collisionMemory = previewObject.GetComponent<PreviewCollisionMemory>();
+                    //only add objects that havent been setup as colliding object.
+                    if (!collisionMemory.IsColliding)
+                    {
+                        GameObject go = (GameObject)Instantiate(kvp.Key.Prefab);
+                        go.transform.position = previewObject.transform.position;
+                    }
                 }
             }
 
@@ -499,6 +499,7 @@ namespace AssetPlacement
 
         private void MakePreviewObject(GameObject currentPreviewObject)
         {
+            currentPreviewObject.AddComponent<PreviewCollisionMemory>();
             DeactivateAllBehaviors(currentPreviewObject);
             DeactivateAllRigidBodies(currentPreviewObject);          
         }
@@ -507,7 +508,22 @@ namespace AssetPlacement
         {
             foreach (var item in GetAll<Behaviour>(currentPreviewObject))
             {
-                item.enabled = false;
+                Collider2D collider = item as Collider2D;
+                if (collider != null)
+                {
+                    if (collider.isTrigger)
+                    {
+                        collider.enabled = false;
+                    }
+                    else
+                    {
+                        collider.isTrigger = true;
+                    }
+                }
+                else
+                {
+                    item.enabled = false;
+                }
             }
         }
 
@@ -539,11 +555,20 @@ namespace AssetPlacement
 
         private IEnumerable<T> GetAll<T>(GameObject obj)
         {
+            //HashSet<T> elements = new HashSet<T>();
             List<Component> components = new List<Component>();
             obj.GetComponents(typeof(T), components);
             components.AddRange(obj.GetComponentsInChildren(typeof(T)));
 
-            return components.Cast<T>();
+            //foreach (T item in components.Cast<T>())
+            //{
+            //    if (!elements.Contains(item))
+            //    {
+            //        elements.Add();
+            //    }
+            //}
+
+            return components.Cast<T>().Distinct().ToArray();
         }
 
         public List<PrefabPositionInfo> GetPositionInfos()
@@ -553,7 +578,7 @@ namespace AssetPlacement
             foreach (var kvp in m_inScenePreviewObjects)
             {
                 foreach (var obj in kvp.Value)
-                {
+                { 
                     result.Add(new PrefabPositionInfo() { Prefab = kvp.Key.Prefab, Position = obj.transform.position});
                 }
             }
@@ -569,15 +594,16 @@ namespace AssetPlacement
                 {
                     if (asset.Prefab == posInfo.Prefab)
                     {
-                        PlaceAsset(posInfo.Position, asset);
+                        PlacePreviewObject(posInfo.Position, asset);
                     }
                 }
             }
         }
 
-        private GameObject PlaceAsset(Vector3 position, LevelAsset asset)
+        private GameObject PlacePreviewObject(Vector3 position, LevelAsset asset)
         {
             GameObject result = Instantiate(asset.Prefab);
+            
             asset.Count--;
             result.transform.position = position;
             RememberPreviewObject(result, asset);
