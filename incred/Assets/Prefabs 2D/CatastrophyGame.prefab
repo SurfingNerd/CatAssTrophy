@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010018370116}
   - 212: {fileID: 212000013092867762}
+  - 60: {fileID: 60000011768161660}
   m_Layer: 0
   m_Name: cat-owner-wakedup
   m_TagString: Untagged
@@ -314,6 +315,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013848954772}
   - 212: {fileID: 212000012490074886}
+  - 60: {fileID: 60000010679143584}
   m_Layer: 0
   m_Name: cat-owner-sleeping
   m_TagString: Untagged
@@ -422,7 +424,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012415909754}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.97, y: -33.48, z: 2}
+  m_LocalPosition: {x: 4.06, y: -31.72, z: 2}
   m_LocalScale: {x: 0.06303833, y: 0.0630383, z: 0.4089358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -461,8 +463,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012051372084}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.485, z: 0}
-  m_LocalScale: {x: 1, y: 0.03, z: 1}
+  m_LocalPosition: {x: -0.143, y: 0.485, z: 0}
+  m_LocalScale: {x: 1.275, y: 0.03, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000014062546654}
@@ -474,8 +476,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010286233950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.485, z: 0}
-  m_LocalScale: {x: 1, y: 0.03, z: 1}
+  m_LocalPosition: {x: -0.143, y: -0.485, z: 0}
+  m_LocalScale: {x: 1.275, y: 0.03, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000014062546654}
@@ -535,7 +537,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011223163580}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.485, y: 0, z: 0}
+  m_LocalPosition: {x: -0.768, y: 0, z: 0}
   m_LocalScale: {x: 0.03, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -666,13 +668,73 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.03}
   serializedVersion: 2
   m_Radius: 6.27
+--- !u!60 &60000010679143584
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013723828932}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: -6.2373047, y: 4.5816603}
+      - {x: -7.8209066, y: 2.7449331}
+      - {x: -8.29162, y: 3.6154356}
+      - {x: -9.630295, y: 3.5706315}
+      - {x: -9.70841, y: -3.99742}
+      - {x: 9.631329, y: -4.314731}
+      - {x: 9.74766, y: 1.0284299}
+      - {x: 8.512241, y: 1.012309}
+      - {x: 8.467295, y: 0.2296196}
+      - {x: 4.296816, y: 1.7844996}
+      - {x: 0.13496366, y: 2.4894466}
+      - {x: -1.9822979, y: 2.3585083}
+      - {x: -4.359152, y: 3.8376062}
+      - {x: -5.6167135, y: 3.930038}
+      - {x: -5.6849117, y: 4.5554066}
+--- !u!60 &60000011768161660
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010190591004}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: -2.3082447, y: -2.5712748}
+      - {x: -8.12314, y: -2.7960367}
+      - {x: -8.190875, y: 1.7516545}
+      - {x: -9.550462, y: 1.6547612}
+      - {x: -9.548755, y: -6.072976}
+      - {x: 9.58096, y: -6.279237}
+      - {x: 9.798026, y: -0.9361049}
+      - {x: 8.548303, y: -0.95800126}
+      - {x: 8.512239, y: -2.5641413}
+      - {x: 2.3218298, y: -2.69201}
+      - {x: 2.1811676, y: 0.6258992}
+      - {x: 3.1573153, y: 4.252494}
+      - {x: 3.1557035, y: 4.9275045}
+      - {x: 1.5848207, y: 6.0036306}
+      - {x: -0.025353432, y: 5.9953146}
+      - {x: -1.4830923, y: 4.643615}
+      - {x: -1.2017488, y: 1.9360188}
 --- !u!60 &60000013478566852
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012217628492}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1149,9 +1211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd5a04dd7351d84f9644a40cbc6d3fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AssetCount: 1
+  AssetCount: 2
   Assets:
   - Prefab: {fileID: 1000012622434812, guid: b3645f7083cc89f4e8c23328e2201a3c, type: 2}
+    Count: 3
+  - Prefab: {fileID: 1000014109854840, guid: 3d6368ad98efdcf45a3bf47892a8dca6, type: 2}
     Count: 1
 --- !u!114 &114000013173856156
 MonoBehaviour:
