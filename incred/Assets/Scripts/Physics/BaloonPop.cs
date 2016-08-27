@@ -10,7 +10,7 @@ namespace Physics
             ExplodingBaloonFadeTime = 0.25f;
         }
 
-        //public GameObject baloonExplosionPrefab;
+        public GameObject baloonExplosionPrefab;
         public float force = 1;
         public float radius = 1;
 
@@ -25,9 +25,11 @@ namespace Physics
                 //if (baloonExplosionPrefab != null)
                 //{
 
-                //GameObject newExplosion = Instantiate(baloonExplosionPrefab);
-                //newExplosion.transform.position = transform.position;
+                GameObject newExplosion = Instantiate(baloonExplosionPrefab);
+                newExplosion.transform.position = transform.position;
                 //ExplodingBaloon explosionScript = newExplosion.GetComponent<ExplodingBaloon>();
+                //explosionScript.force = force;
+                //explosionScript.radius = radius;
 
                 GameObject fadingBaloon = Instantiate<GameObject>(gameObject);
                 fadingBaloon.transform.SetParent(gameObject.transform.parent);

@@ -804,6 +804,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1000012858481558, guid: 118f9455055a1584f9d23f2f227dc144,
         type: 2}
+    - target: {fileID: 20000013488042624, guid: 78d6b42d5e977374986bac360a8306da,
+        type: 2}
+      propertyPath: orthographic size
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 78d6b42d5e977374986bac360a8306da, type: 2}
   m_IsPrefabParent: 0

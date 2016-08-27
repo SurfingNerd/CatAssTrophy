@@ -97,8 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb5becbe7bb55e844b00494fc292d0eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 1
-  radius: 10
+  baloonExplosionPrefab: {fileID: 1000013384319482, guid: fca2d2db2a9641544ac9482db55453dc,
+    type: 2}
+  force: 100
+  radius: 1000
   ExplodingBaloonFadeTime: 0.25
 --- !u!212 &212000011861658954
 SpriteRenderer:

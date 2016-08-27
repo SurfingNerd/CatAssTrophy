@@ -10,7 +10,7 @@ namespace Levels
         /// </summary>
         public static int CurrentLevel;
 
-        public static readonly int MaxLevels = 5;
+        public static readonly int MaxLevels = 6;
 
         public static void LoadStartScreen()
         {
